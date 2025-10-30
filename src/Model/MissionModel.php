@@ -83,7 +83,7 @@ class MissionModel
             return $result;
         } catch (PDOException $e) {
             var_dump($e->getMessage());
-            $alertError = "Echec lors de la récupération de toutes les Villes !";
+            $this->alertError = "Echec lors de la récupération de toutes les Villes !";
         }
     }
     public function getCountry()
@@ -96,7 +96,40 @@ class MissionModel
             return $result;
         } catch (PDOException $e) {
             var_dump($e->getMessage());
-            $alertError = "Echec lors de la récupération de tous les pays !";
+            $this->alertError = "Echec lors de la récupération de tous les pays !";
+        }
+    }
+
+    public function addDemandMission(
+        $demand_mission_date,
+        $demand_mission_validation,
+        $demand_mission_note,
+        $demand_mission_avis,
+        $id_users,
+        $id_missions
+    ) {
+        try {
+
+            $request = $this->db->prepare("INSERT INTO demand_mission ( demand_mission_date, 
+                                                                        demand_mission_validation,
+                                                                        demand_mission_note,
+                                                                        demand_mission_avis,
+                                                                        id_users,
+                                                                        id_missions
+                                                                        ) VALUES (?,?,?,?,?,?) ");
+            $request->execute([
+                $demand_mission_date,
+                $demand_mission_validation,
+                $demand_mission_note,
+                $demand_mission_avis,
+                $id_users,
+                $id_missions
+            ]);
+
+
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+            $this->alertError = "Echec de l'ajout";
         }
     }
 }

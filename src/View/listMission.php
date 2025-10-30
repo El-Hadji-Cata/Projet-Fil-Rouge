@@ -22,6 +22,7 @@ require_once 'src/View/partial/_alert.php';
                         <p class="card-text"><strong>Date de fin:</strong> <?= $categ['missions_date_stop'] ?></small></p>
                         <p class="card-text"><strong>Duree: </strong><?= $categ['missions_duration_hour'] ?></small></p>
                         <p class="card-text"><strong>Lieu: </strong><?= $categ['missions_address'] ?></small></p>
+                        <a href="index.php?page=mission&action=missionRegister&idMission=<?= $categ['missions_id'] ?>&idUser=<?= $_SESSION['users']['id'] ?>" class="btn btn-primary">S'inscrire</a>
                     </div>
                 </div>
             </div>
