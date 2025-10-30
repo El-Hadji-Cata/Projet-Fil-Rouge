@@ -41,6 +41,9 @@ class MissionCtrl
         } else if ($action == 'addMission') {
 
             $this->addMission();
+        } else if($action === 'missionRegister') {
+
+            $this->addDemandMission();
         } else {
 
             $this->page404();
@@ -106,5 +109,13 @@ class MissionCtrl
         }
 
         require_once 'src/View/addMission.php';
+    }
+
+    public function addDemandMission()
+    {
+        var_dump($_SESSION);
+
+        $this->missionModel->addDemandMission();
+        include 'src/View/addDemandMission.php';
     }
 }
