@@ -4,10 +4,11 @@ class UserCtrl
 {
     public $alertError = null;
 
-    public $alertSucces = null;
+    public $alertSuccess = null;
 
     public $userModel;
     public $adminModel;
+    public $missionModel;
 
     public function __construct($db)
     {
@@ -21,7 +22,7 @@ class UserCtrl
         if ($action === 'signInUser') { /* USER */
 
             $this->showSignInUser();
-        } else if ($action === 'signUpUser') { 
+        } else if ($action === 'signUpUser') {
 
             $this->showSignUpUser();
         } else if ($action === 'addUser') {
@@ -30,6 +31,12 @@ class UserCtrl
         } else if ($action === 'signInUsr') {
 
             $this->signInUser();
+        } else if ($action === 'profile') {
+
+            $this->showProfile();
+        } else if ($action === 'editProfile') {
+
+            $this->editProfile();
         } else if ($action === 'logOut') {  /* LOGOUT*/
 
             $this->logOut();
@@ -45,9 +52,16 @@ class UserCtrl
         } else if ($action === 'signInAdmn') {
 
             $this->signInAdmin();
+        } else if ($action === 'showDashbord') {
+
+            $this->showAdminDashboard();
+        } else if ($action === 'validateDemand') { // NOUVELLE ACTION
+            $this->validateDemand();
+        } else if ($action === 'rejectDemand') {   // NOUVELLE ACTION
+            $this->rejectDemand();
         } else {
 
-            header("Location : index.php");
+            header("Location: index.php");
             exit();
         }
     }
@@ -89,10 +103,10 @@ class UserCtrl
 
 
                         $uploadOk = true;
-                        $now = date("d-m-Y H-i-s");
+                        $now = date("d-m-Y_H-i-s");
 
-                        $targetDir = "/public/picture/";
-                        $targetFile = dirname(__DIR__) . $targetDir . $_POST['firstname'] . '-' . $now . "." . $imageFileType;
+                        $targetDir = "public/picture/";
+                        $targetFile = $targetDir . $_POST['firstname'] . '-' . $now . "." . $imageFileType;
 
 
 
@@ -155,7 +169,7 @@ class UserCtrl
                             'isAdmin' => 'false'
                         ];
 
-                        $this->alertSucces = "Le compte a bien été créé :) ";
+                        $this->alertSuccess = "Le compte a bien été créé :) ";
                     }
                 }
             }
@@ -257,7 +271,7 @@ class UserCtrl
 
                     $pswrdHash = password_hash($_POST['pswrd'], PASSWORD_DEFAULT);
 
-                    
+
                     if (!$this->alertError) {
 
                         $this->userModel->addAdmin(
@@ -274,7 +288,7 @@ class UserCtrl
                             'isAdmin' => 'true'
                         ];
 
-                        $this->alertSucces = "Le compte a bien été créé :) ";
+                        $this->alertSuccess = "Le compte a bien été créé :) ";
                     }
                 }
             }
@@ -341,5 +355,137 @@ class UserCtrl
     public function showSignUpAdmin()
     {
         require_once 'src/View/signUpAdmin.php';
+    }
+
+    public function showProfile()
+    {
+        // 1. Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['users']['id'])) {
+            header("Location: index.php?page=user&action=signInUser");
+            exit();
+        }
+
+        $userId = $_SESSION['users']['id'];
+
+        // 2. Récupérer les infos de l'utilisateur (via son email ou ID)
+        $userData = $this->userModel->getUserByEmail($_SESSION['users']['email']);
+
+        // 3. Récupérer ses missions
+        $userMissions = $this->userModel->getUserMissions($userId);
+
+        require_once 'src/View/userProfile.php';
+    }
+
+    public function editProfile()
+    {
+        if (!isset($_SESSION['users']['id'])) {
+            header("Location: index.php?page=user&action=signInUser");
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_SESSION['users']['id'];
+            $firstname = htmlspecialchars($_POST['firstname']);
+            $lastname = htmlspecialchars($_POST['lastname']);
+            $address = htmlspecialchars($_POST['address']);
+            $city = htmlspecialchars($_POST['city']);
+
+            $fileName = null;
+
+            if (!empty($_FILES['image']['name'])) {
+                $imageFileType = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+                $now = date("d-m-Y_H-i-s");
+
+                $targetDir = "src/public/picture/";
+                $fileBaseName = $firstname . '-' . $now . "." . $imageFileType;
+                $targetFile = $targetDir . $fileBaseName;
+
+                $uploadOk = true;
+
+                // Vérifications
+                $check = getimagesize($_FILES['image']['tmp_name']);
+                if ($check === false) {
+                    $uploadOk = false;
+                    $this->alertError = "Le fichier n'est pas une image !";
+                }
+
+                if ($_FILES['image']['size'] > 500000) {
+                    $uploadOk = false;
+                    $this->alertError = "Le fichier est trop volumineux (max 500ko) !";
+                }
+
+                if (!in_array($imageFileType, ['jpg', 'jpeg', 'png'])) {
+                    $uploadOk = false;
+                    $this->alertError = "Uniquement JPG, JPEG ou PNG !";
+                }
+
+                if ($uploadOk === true) {
+
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
+                        $fileName = $fileBaseName;
+                    } else {
+                        $this->alertError = "Échec de l'upload technique. Vérifiez les droits du dossier public/picture.";
+                    }
+                }
+            }
+
+            $success = $this->userModel->updateUserProfile($id, $firstname, $lastname, $address, $city, $fileName);
+
+            if ($success) {
+                $this->alertSuccess = "Profil mis à jour avec succès !";
+                $_SESSION['users']['firstname'] = $firstname;
+            }
+        }
+
+        $this->showProfile();
+    }
+
+    public function showAdminDashboard()
+    {
+        // Vérification de sécurité Admin
+        if (!isset($_SESSION['admin'])) {
+            header("Location: index.php?page=user&action=signInAdmin");
+            exit();
+        }
+
+        $allUsers = $this->userModel->getAllUsers();
+        $allMissions = $this->userModel->getAllMissions(); // Utilise la méthode ajoutée au modèle
+        $pendingDemands = $this->userModel->getDemandsByStatus(0);
+        $activeMissions = $this->userModel->getDemandsByStatus(1);
+        // 5. Demandes rejetées (validation = 2)
+        $rejectedDemands = $this->userModel->getDemandsByStatus(2);
+
+        require_once 'src/View/adminDashboard.php';
+    }
+
+    public function validateDemand()
+    {
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        if ($id) {
+            // On appelle une méthode pour passer le statut à 1
+            $this->updateStatus($id, 1);
+        }
+    }
+
+    public function rejectDemand()
+    {
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        if ($id) {
+            // On appelle une méthode pour passer le statut à 2 (refusé) ou 0 pour reset
+            $this->updateStatus($id, 2);
+        }
+    }
+
+    private function updateStatus($id, $status)
+    {
+        // On crée cette méthode rapide dans le modèle pour changer le statut
+        $success = $this->userModel->updateDemandStatus($id, $status);
+
+        if ($success) {
+            header("Location: index.php?page=user&action=showDashbord");
+        } else {
+            echo "Erreur lors de la mise à jour du statut.";
+        }
+        exit();
     }
 }
