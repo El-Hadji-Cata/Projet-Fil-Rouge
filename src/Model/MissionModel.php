@@ -26,6 +26,20 @@ class MissionModel
             $this->alertError = "Echec de la récupération de toutes les missions !";
         }
     }
+    public function getById()
+    {
+        /* try {
+
+            $request = $this->db->prepare("SELECT * FROM missions WHERE missions_id = ?");
+            $request->execute([])
+            $result = $request->fetch(PDO::FETCH_ASSOC);
+
+            return $result;
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+            $this->alertError = "Echec de la récupération de toutes les missions !";
+        } */
+    }
 
     public function addMission(
         $mission_name,
@@ -125,11 +139,81 @@ class MissionModel
                 $id_users,
                 $id_missions
             ]);
-
-
         } catch (PDOException $e) {
             var_dump($e->getMessage());
             $this->alertError = "Echec de l'ajout";
         }
+    }
+
+    public function alreadyApplied($userId, $idMission)
+    {
+
+        $request = "SELECT COUNT(*) FROM demand_mission WHERE id_users = :userId AND id_missions = :missionId";
+
+        $statement = $this->db->prepare($request);
+        $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $statement->bindValue(':missionId', $idMission, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchColumn() > 0;
+    }
+
+    public function removeDemandMission($userId, $idMission)
+    {
+        $request = "DELETE FROM demand_mission WHERE id_users = :userId AND id_missions = :missionId";
+        $stmt = $this->db->prepare($request);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':missionId', $idMission, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+
+    public function validateDemand($idDemand, $idMission)
+    {
+        try {
+            // Début de la transaction
+            $this->db->beginTransaction();
+
+            // 1. Passer la validation à 1 dans la table demand_mission
+            $sqlValidate = "UPDATE demand_mission SET demand_mission_validation = 1 WHERE id_demand_mission = ?";
+            $stmt1 = $this->db->prepare($sqlValidate);
+            $stmt1->execute([$idDemand]);
+
+            // 2. Décrémenter le compteur dans la table missions (seulement si > 0)
+            $sqlDecrement = "UPDATE missions 
+                         SET missions_nbre_volontaries = missions_nbre_volontaries - 1 
+                         WHERE missions_id = ? AND missions_nbre_volontaries > 0";
+            $stmt2 = $this->db->prepare($sqlDecrement);
+            $stmt2->execute([$idMission]);
+
+            // Validation finale de la transaction
+            $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            // En cas d'erreur, on annule tout
+            $this->db->rollBack();
+            var_dump($e->getMessage());
+            return false;
+        }
+    }
+
+    public function searchMissions($keyword, $thematicId)
+    {
+        $sql = "SELECT * FROM missions WHERE 1=1";
+        $params = [];
+
+        if (!empty($keyword)) {
+            $sql .= " AND (missions_name LIKE ?)";
+            $params[] = "%$keyword%";
+        }
+
+        if (!empty($thematicId)) {
+            $sql .= " AND id_thematics_missions = ?";
+            $params[] = $thematicId;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
