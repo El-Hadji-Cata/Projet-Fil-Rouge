@@ -146,17 +146,19 @@ class MissionModel
     }
 
     public function alreadyApplied($userId, $idMission)
-    {
+{
+    // On compte le nombre de lignes correspondant à cet utilisateur pour cette mission
+    // Remplacez 'candidature' par le nom réel de votre table de liaison
+    $sql = "SELECT COUNT(*) FROM candidature WHERE users_id = :userId AND missions_id = :missionId";
+    
+    $statement = $this->db->prepare($sql);
+    $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
+    $statement->bindValue(':missionId', $idMission, PDO::PARAM_INT);
+    $statement->execute();
 
-        $request = "SELECT COUNT(*) FROM demand_mission WHERE id_users = :userId AND id_missions = :missionId";
-
-        $statement = $this->db->prepare($request);
-        $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
-        $statement->bindValue(':missionId', $idMission, PDO::PARAM_INT);
-        $statement->execute();
-
-        return $statement->fetchColumn() > 0;
-    }
+    // Si le compte est supérieur à 0, l'utilisateur a déjà postulé
+    return $statement->fetchColumn() > 0;
+}
 
     public function removeDemandMission($userId, $idMission)
     {

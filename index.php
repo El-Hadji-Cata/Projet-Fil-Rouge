@@ -13,6 +13,20 @@ require_once 'src/Model/MissionModel.php';
 require_once 'src/Model/ThematicModel.php';
 require_once 'src/Model/UserModel.php';
 
+// NOUVEAU CODE
+$host     = getenv('DB_HOST')     ?: 'localhost';
+$dbname   = getenv('DB_NAME')     ?: 'les_eclaireurs_solidaires'; // Mettez le nom exact de votre BDD XAMPP
+$user     = getenv('DB_USER')     ?: 'root';
+$password = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
+
+/*
 $host = 'localhost';
 $dbname = 'eclaireurs_solidaires';
 $user = 'root';
@@ -28,7 +42,7 @@ try {
 } catch (PDOException $e) {
     
     die("Echec connexion à la BDD" . $e->getMessage());
-}
+}*/
 
 $page = filter_input(INPUT_GET, 'page');
 

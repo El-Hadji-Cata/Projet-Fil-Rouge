@@ -41,7 +41,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?page=user&action=profile" style="color: #f1c40f;">
-                        <i class="fas fa-user"></i> 
+                        <i class="fas fa-user"></i>
                         <?php
                         if (isset($_SESSION['users'])) {
                             echo htmlspecialchars($_SESSION['users']['firstname']);

@@ -1,0 +1,47 @@
+name: Test du projet PHP/MySQL
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+env:
+  DB_HOST: '127.0.0.1'
+  DB_NAME: 'eclaireurs_solidaires'
+  DB_USER: 'root'
+  DB_PASSWORD: 'root'
+
+jobs:
+  test-projet:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: eclaireurs_solidaires
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Télécharger le code du dépôt
+        uses: actions/checkout@v4
+
+      - name: Configurer PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_mysql, mysqli
+
+      - name: Importer la base de données SQL
+        run: |
+          if [ -f database.sql ]; then
+            mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < database.sql
+            echo "Base de données importée avec succès !"
+          fi
+
+      - name: Tester la connexion PHP
+        run: php db.php # <-- Remplacez db.php par le nom de votre fichier de connexion
