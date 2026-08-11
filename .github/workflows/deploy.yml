@@ -44,4 +44,4 @@ jobs:
           fi
 
       - name: Tester la connexion PHP
-        run: php db.php # <-- Remplacez db.php par le nom de votre fichier de connexion
+        run: php index.php
