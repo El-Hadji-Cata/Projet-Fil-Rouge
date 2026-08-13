@@ -57,7 +57,7 @@ $controller = null;
 
 foreach ($router as $routerValue => $className) {
     if ($page == $routerValue) {
-        $controller = new $className($db);
+        $controller = new $className($dbname);
         $controller->manage();
     }
 }
