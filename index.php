@@ -15,7 +15,7 @@ require_once 'src/Model/UserModel.php';
 
 // NOUVEAU CODE
 $host     = getenv('DB_HOST')     ?: 'localhost';
-$dbname   = getenv('DB_NAME')     ?: 'les_eclaireurs_solidaires'; // Mettez le nom exact de votre BDD XAMPP
+$dbname   = getenv('DB_NAME')     ?: 'eclaireurs_solidaires'; // Mettez le nom exact de votre BDD XAMPP
 $user     = getenv('DB_USER')     ?: 'root';
 $password = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : '';
 
@@ -57,7 +57,7 @@ $controller = null;
 
 foreach ($router as $routerValue => $className) {
     if ($page == $routerValue) {
-        $controller = new $className($dbname);
+        $controller = new $className($pdo); // <-- Transmet l'objet PDO $pdo
         $controller->manage();
     }
 }

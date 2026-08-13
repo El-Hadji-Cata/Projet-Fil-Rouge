@@ -58,7 +58,7 @@ class MissionCtrl
         include 'src/View/home.php';
     }
 
-    public function showListMission()
+    /*public function showListMission()
     {
         // On récupère le mot-clé (on force le type "string")
         $keyword = isset($_POST['keyword']) ? (string)$_POST['keyword'] : null;
@@ -75,7 +75,28 @@ class MissionCtrl
         }
 
         include 'src/View/listMission.php';
+    }*/
+
+    public function showListMission()
+{
+    // 1. Récupérer les thématiques pour remplir le filtre dynamique de la vue
+    $this->thematicModel = new ThematicModel($this->db);
+    $this->thematics = $this->thematicModel->getAll();
+
+    // 2. Récupérer le mot-clé et le filtre thématique
+    $keyword = isset($_POST['keyword']) ? (string)$_POST['keyword'] : null;
+    $thematicId = isset($_POST['thematic']) ? (int)$_POST['thematic'] : 0;
+
+    if ($keyword || $thematicId) {
+        // Filtrage des missions
+        $this->missions = $this->missionModel->searchMissions($keyword, $thematicId);
+    } else {
+        // Affichage de toutes les missions
+        $this->missions = $this->missionModel->getAll();
     }
+
+    include 'src/View/listMission.php';
+}
     /* public function showListMission()
     {
         $this->missions = $this->missionModel->getAll();
