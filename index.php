@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-/* var_dump($_SESSION); */
+ /*var_dump($_SESSION);*/ 
 
 require_once 'src/Controller/MessageCtrl.php';
 require_once 'src/Controller/MissionCtrl.php';
@@ -17,10 +17,11 @@ $host = 'localhost';
 $dbname = 'eclaireurs_solidaires';
 $user = 'root';
 $password = '';
+$port = '3307';
 
 try {
     $db = new PDO(
-        "mysql:host=$host;dbname=$dbname",
+        "mysql:host=$host;port=$port;dbname=$dbname",
         $user,
         $password,
         array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)

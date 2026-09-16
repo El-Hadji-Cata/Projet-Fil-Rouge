@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <div class="search-container">
+        <!-- <div class="search-container">
             <form action="index.php?page=mission&action=listAllMission" method="POST" class="search-form">
                 <div class="search-group">
                     <input type="text" name="keyword" placeholder="Rechercher (lieu, nom...)" value="<?= $_POST['keyword'] ?? '' ?>">
@@ -18,7 +18,7 @@
                     </button>
                 </div>
             </form>
-        </div>
+        </div> -->
 
         <ul class="links">
             <li class="nav-iem"><a href="#">A propos</a></li>
