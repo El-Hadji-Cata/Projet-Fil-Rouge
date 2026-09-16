@@ -396,7 +396,7 @@ class UserCtrl
                 $imageFileType = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
                 $now = date("d-m-Y_H-i-s");
 
-                $targetDir = "src/public/picture/";
+                $targetDir = "public/picture/";
                 $fileBaseName = $firstname . '-' . $now . "." . $imageFileType;
                 $targetFile = $targetDir . $fileBaseName;
 

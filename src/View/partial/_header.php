@@ -21,7 +21,9 @@
         </div> -->
 
         <ul class="links">
-            <li class="nav-iem"><a href="#">A propos</a></li>
+            <?php if (isset($_SESSION['user'])): ?>
+                <li class="nav-iem"><a href="#">A propos</a></li>
+            <?php endif; ?>
 
             <?php if (isset($_SESSION['admin'])): ?>
                 <li class="nav-iem"><a href="index.php?page=mission&action=addMission">Ajouter une mission</a></li>
