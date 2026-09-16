@@ -49,9 +49,9 @@ require_once 'src/View/partial/_alert.php';
                     <p>Les actions solidaires sont des initiatives collectives
                         visant à offrir une aide mutuelle et un soutien aux personnes
                         ou communautés en situation de besoin.
-                        En participant à des actions solidaires, chacun contribue
+                        En participant à ces actions, chacun contribue
                         activement à renforcer les liens communautaires et à promouvoir
-                        l'entraide, des valeurs essentielles dans toute société.
+                        l'entraide.
                     </p>
                 </div>
             </div>
@@ -62,11 +62,10 @@ require_once 'src/View/partial/_alert.php';
                 <div class="text">
                     <h3>Engagement</h3>
                     <p>L'engagement bénévole associatif participe au développement
-                        d'une société plus solidaire et fraternelle, attachée à servir
+                        d'une société plus solidaire, attachée à servir
                         l'intérêt général et le bien commun, et favorise l'expression
-                        d'une conscience citoyenne attentive à la construction d'un
-                        « vivre ensemble » respectueux de sa diversité. L'engagement
-                        associatif bénévole est un levier d'inclusion sociale.
+                        d'une conscience citoyenne à la construction d'un
+                        « vivre ensemble » respectueux de sa diversité.
                     </p>
                 </div>
             </div>
@@ -80,8 +79,6 @@ require_once 'src/View/partial/_alert.php';
                         causes qui vous tiennent à cœur, ou simplement partager
                         vos compétences, le bénévolat est une formidable opportunité
                         de donner du sens à votre temps libre.
-                        S'impliquer dans une association, c'est offrir une partie
-                        de son temps sans rémunération, mais avec une vraie reconnaissance.
                     </p>
                 </div>
             </div>
