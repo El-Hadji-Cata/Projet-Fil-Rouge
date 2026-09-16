@@ -9,12 +9,6 @@ require_once 'src/View/partial/_alert.php';
         <div class="logo-recherche">
             <div class="logo-main"></div>
             <!-- <img src="pictures/logo-main.PNG" alt="logo-main"> -->
-            <div class="logo-recherche-btn">
-                <input type="text" placeholder="Rechercher....">
-                <button class="recherche" type="button">
-                    <i class="fa fa-search-plus" aria-hidden="true"></i>
-                </button>
-            </div>
         </div>
     </section>
 
