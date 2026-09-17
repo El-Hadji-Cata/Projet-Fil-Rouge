@@ -119,6 +119,7 @@ class MissionCtrl
         /*  $this->country = $this->missionModel->getCountry(); */
 
         if (isset($_POST['title'])) {
+            $datePub = !empty($_POST['datePub']) ? $_POST['datePub'] : date('Y-m-d');
             if (
                 empty($_POST['title']) ||
                 empty($_POST['summary']) ||
@@ -127,11 +128,10 @@ class MissionCtrl
                 empty($_POST['nbre']) ||
                 empty($_POST['address']) ||
                 empty($_POST['time']) ||
-                empty($_POST['datePub']) ||
                 empty($_POST['category']) ||
                 empty($_POST['city'])
             ) {
-                $this->alertError = "Veuillez remplir tous les champs !";
+                $this->alertError = "Veuillez remplir tous les champs !!";
             } else {
                 $this->missionModel->addMission(
                     $_POST['title'],
@@ -141,7 +141,7 @@ class MissionCtrl
                     $_POST['nbre'],
                     $_POST['address'],
                     $_POST['time'],
-                    $_POST['datePub'],
+                    $datePub, // Utilisation de la variable sécurisée
                     $_POST['category'],
                     $_POST['city']
                 );

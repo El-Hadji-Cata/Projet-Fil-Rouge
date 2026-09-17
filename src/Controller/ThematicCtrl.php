@@ -22,12 +22,10 @@ class ThematicCtrl
         if ($action === 'show') {
 
             $this->showThematic();
-
         } else if ($action === 'addThematic') {
 
             $this->addThematic();
-            
-        } else if($action === 'toggle') {
+        } else if ($action === 'toggle') {
 
             $this->changeStatutThematic();
         }
@@ -43,13 +41,12 @@ class ThematicCtrl
     {
         if (
             isset($_POST['thematics_missions_name']) &&
-            !empty($_POST['thematics_missions_name'])
+            !empty(trim($_POST['thematics_missions_name']))
         ) {
-            $thematic_name = htmlspecialchars($_POST['thematics_missions_name'], ENT_QUOTES, 'UTF-8');
+            $thematic_name = trim($_POST['thematics_missions_name']);
 
             $this->thematicModel->addThematic($thematic_name);
         } else {
-
             $this->alertError = "Veuillez remplir tous les champs !";
         }
 
@@ -60,7 +57,7 @@ class ThematicCtrl
 
     public function changeStatutThematic()
     {
-        if(isset($_GET['id']) && !empty($_GET['id'])) {
+        if (isset($_GET['id']) && !empty($_GET['id'])) {
             $idThematic = htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8');
             $this->thematicModel->updateStatutThematic($idThematic);
 

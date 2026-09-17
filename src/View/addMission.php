@@ -61,7 +61,9 @@ require_once 'src/View/partial/_alert.php';
                         <option value="" disabled selected>Choisir une thématique...</option>
                         <?php if (!empty($this->thematics)): ?>
                             <?php foreach ($this->thematics as $category): ?>
-                                <option value="<?= $category['thematics_missions_id'] ?>"><?= htmlspecialchars($category['thematics_missions_name']) ?></option>
+                                <option value="<?= $category['thematics_missions_id'] ?>">
+                                    <?= htmlspecialchars($category['thematics_missions_name'], ENT_QUOTES, 'UTF-8') ?>
+                                </option>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>
