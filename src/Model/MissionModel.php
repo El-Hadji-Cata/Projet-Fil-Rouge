@@ -163,10 +163,10 @@ class MissionModel
 
     public function removeDemandMission($userId, $idMission)
     {
-        $request = "DELETE FROM demand_mission WHERE id_users = :userId AND id_missions = :missionId";
-        $stmt = $this->db->prepare($request);
-        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':missionId', $idMission, PDO::PARAM_INT);
+        $sql = "DELETE FROM demand_mission WHERE id_users = :userId AND id_missions = :missionId";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':userId', (int)$userId, PDO::PARAM_INT);
+        $stmt->bindValue(':missionId', (int)$idMission, PDO::PARAM_INT);
         return $stmt->execute();
     }
 

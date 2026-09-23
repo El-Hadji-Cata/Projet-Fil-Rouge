@@ -78,25 +78,25 @@ class MissionCtrl
     }*/
 
     public function showListMission()
-{
-    // 1. Récupérer les thématiques pour remplir le filtre dynamique de la vue
-    $this->thematicModel = new ThematicModel($this->db);
-    $this->thematics = $this->thematicModel->getAll();
+    {
+        // 1. Récupérer les thématiques pour remplir le filtre dynamique de la vue
+        $this->thematicModel = new ThematicModel($this->db);
+        $this->thematics = $this->thematicModel->getAll();
 
-    // 2. Récupérer le mot-clé et le filtre thématique
-    $keyword = isset($_POST['keyword']) ? (string)$_POST['keyword'] : null;
-    $thematicId = isset($_POST['thematic']) ? (int)$_POST['thematic'] : 0;
+        // 2. Récupérer le mot-clé et le filtre thématique
+        $keyword = isset($_POST['keyword']) ? (string)$_POST['keyword'] : null;
+        $thematicId = isset($_POST['thematic']) ? (int)$_POST['thematic'] : 0;
 
-    if ($keyword || $thematicId) {
-        // Filtrage des missions
-        $this->missions = $this->missionModel->searchMissions($keyword, $thematicId);
-    } else {
-        // Affichage de toutes les missions
-        $this->missions = $this->missionModel->getAll();
+        if ($keyword || $thematicId) {
+            // Filtrage des missions
+            $this->missions = $this->missionModel->searchMissions($keyword, $thematicId);
+        } else {
+            // Affichage de toutes les missions
+            $this->missions = $this->missionModel->getAll();
+        }
+
+        include 'src/View/listMission.php';
     }
-
-    include 'src/View/listMission.php';
-}
     /* public function showListMission()
     {
         $this->missions = $this->missionModel->getAll();
@@ -209,28 +209,33 @@ class MissionCtrl
     public function toggleDemandMission()
     {
         $idMission = filter_input(INPUT_GET, 'idMission', FILTER_VALIDATE_INT);
-        $userId = $_SESSION['users']['id'] ?? null;
 
-        if (!isset($_SESSION['users']['id'])) {
+        // Récupération robuste de l'ID utilisateur (gestion des différents noms de clés)
+        $userId = $_SESSION['users']['users_id']
+            ?? $_SESSION['users']['id_users']
+            ?? $_SESSION['users']['id']
+            ?? null;
+
+        if (!$userId) {
             $this->alertError = "Vous devez être connecté pour postuler.";
             header('Location: index.php?page=user&action=signInUser');
             exit;
         }
 
-        if ($userId && $idMission) {
-            //je vérifie si l'utilsateur a déja postulé ou non
+        if ($idMission) {
+            // Vérification si l'utilisateur a déjà postulé
             if ($this->missionModel->alreadyApplied($userId, $idMission)) {
                 $this->missionModel->removeDemandMission($userId, $idMission);
+                $this->alertSuccess = "Votre désinscription a été prise en compte.";
             } else {
                 $today = date("Y-m-d H:i:s");
-                $this->alertSuccess = "Votre candidature a été envoyée avec succès.";
                 $this->missionModel->addDemandMission($today, 0, "", "", $userId, $idMission);
+                $this->alertSuccess = "Votre candidature a été envoyée avec succès.";
             }
+        } else {
+            $this->alertError = "ID de mission invalide.";
         }
 
-        /* header("Location: index.php?page=mission&action=listAllMission");
-        exit; */
-        /* include 'src/View/listMission.php'; */
         $this->showListMission();
     }
 
@@ -260,38 +265,38 @@ class MissionCtrl
     }*/
 
     public function adminValidate()
-{
-    if (!isset($_SESSION['admin'])) {
-        $this->alertError = "Accès refusé.";
-        $this->home();
-        return;
-    }
+    {
+        if (!isset($_SESSION['admin'])) {
+            $this->alertError = "Accès refusé.";
+            $this->home();
+            return;
+        }
 
-    $idDemand = filter_input(INPUT_GET, 'idDem', FILTER_VALIDATE_INT);
-    $idMission = filter_input(INPUT_GET, 'idMiss', FILTER_VALIDATE_INT);
-    $status = filter_input(INPUT_GET, 'status'); // 'validate' ou 'refuse'
+        $idDemand = filter_input(INPUT_GET, 'idDem', FILTER_VALIDATE_INT);
+        $idMission = filter_input(INPUT_GET, 'idMiss', FILTER_VALIDATE_INT);
+        $status = filter_input(INPUT_GET, 'status'); // 'validate' ou 'refuse'
 
-    if ($idDemand && $idMission) {
-        if ($status === 'validate') {
-            // Passe id_status à 2 (Validée) et décrémente le nombre de places
-            $success = $this->missionModel->updateDemandStatus($idDemand, 2);
-            if ($success) {
-                $this->missionModel->decrementMissionPlaces($idMission);
-                $this->alertSuccess = "Candidature validée avec succès.";
-            } else {
-                $this->alertError = "Erreur lors de la validation.";
-            }
-        } else if ($status === 'refuse') {
-            // Passe id_status à 3 (Rejetée)
-            $success = $this->missionModel->updateDemandStatus($idDemand, 3);
-            if ($success) {
-                $this->alertError = "Candidature refusée.";
-            } else {
-                $this->alertError = "Erreur lors du refus.";
+        if ($idDemand && $idMission) {
+            if ($status === 'validate') {
+                // Passe id_status à 2 (Validée) et décrémente le nombre de places
+                $success = $this->missionModel->updateDemandStatus($idDemand, 2);
+                if ($success) {
+                    $this->missionModel->decrementMissionPlaces($idMission);
+                    $this->alertSuccess = "Candidature validée avec succès.";
+                } else {
+                    $this->alertError = "Erreur lors de la validation.";
+                }
+            } else if ($status === 'refuse') {
+                // Passe id_status à 3 (Rejetée)
+                $success = $this->missionModel->updateDemandStatus($idDemand, 3);
+                if ($success) {
+                    $this->alertError = "Candidature refusée.";
+                } else {
+                    $this->alertError = "Erreur lors du refus.";
+                }
             }
         }
-    }
 
-    $this->showListMission();
-}
+        $this->showListMission();
+    }
 }
