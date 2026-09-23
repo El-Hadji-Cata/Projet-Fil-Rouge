@@ -79,10 +79,10 @@ class UserModel
 
     public function getUserMissions($userId)
     {
-        $sql = "SELECT m.*, dm.demand_mission_validation 
-                FROM missions m
-                JOIN demand_mission dm ON m.missions_id = dm.id_missions
-                WHERE dm.id_users = ?";
+        $sql = "SELECT m.*, dm.demand_mission_validation, dm.id_status 
+            FROM missions m
+            JOIN demand_mission dm ON m.missions_id = dm.id_missions
+            WHERE dm.id_users = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -133,7 +133,7 @@ class UserModel
             return [];
         }
     }
-    
+
 
     public function updateDemandStatus($id, $status)
     {

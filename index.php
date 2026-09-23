@@ -17,7 +17,7 @@ $host = 'localhost';
 $dbname = 'eclaireurs_solidaires';
 $user = 'root';
 $password = '';
-$port = '3307';
+$port = '3306';
 
 try {
     $db = new PDO(

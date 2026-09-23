@@ -121,7 +121,7 @@ class MissionModel
         $demand_mission_avis,
         $id_users,
         $id_missions,
-        $id_status = 1 // Valeur par défaut correspondant à un ID existant dans la table status
+        $id_status = 1
     ) {
         try {
             $request = $this->db->prepare("INSERT INTO demand_mission (
@@ -219,4 +219,36 @@ class MissionModel
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-}
+
+    public function getUserDemandsWithStatus($userId)
+    {
+        try {
+            $sql = "SELECT dm.*, m.missions_name, s.status_name 
+                FROM demand_mission dm
+                JOIN missions m ON dm.id_missions = m.missions_id
+                JOIN status s ON dm.id_status = s.status_id
+                WHERE dm.id_users = ?
+                ORDER BY dm.demand_mission_date DESC";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$userId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    public function updateDemandStatus($idDemand, $statusId)
+    {
+        $sql = "UPDATE demand_mission SET id_status = ? WHERE id_demand_mission = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$statusId, $idDemand]);
+    }
+
+    public function decrementMissionPlaces($idMission)
+    {
+        $sql = "UPDATE missions SET missions_nbre_volontaries = missions_nbre_volontaries - 1 WHERE missions_id = ? AND missions_nbre_volontaries > 0";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$idMission]);
+    }
+} // Accolade de fin de classe

@@ -6,7 +6,7 @@ require_once 'src/View/partial/_alert.php';
 
 <div class="container my-5" style="max-width: 800px;">
 
-    <!-- 1. CARTE DU HAUT : Avec ombre portée visible (shadow-lg) -->
+    <!-- 1. CARTE DU HAUT : Profil & Mes Missions -->
     <div class="card border-0 shadow-lg mb-5" style="border-radius: 12px; background-color: #ffffff;">
         <div class="card-body p-4 p-md-5 text-center">
 
@@ -17,10 +17,10 @@ require_once 'src/View/partial/_alert.php';
             </div>
 
             <h3 class="fw-bold text-dark mb-1" style="font-size: 1.5rem;">
-                <?= htmlspecialchars($userData['users_firstname'] ?? 'basse') ?> <?= htmlspecialchars($userData['users_lastname'] ?? 'fall') ?>
+                <?= htmlspecialchars($userData['users_firstname'] ?? '') ?> <?= htmlspecialchars($userData['users_lastname'] ?? '') ?>
             </h3>
-            <p class="text-muted small mb-1">Email : <?= htmlspecialchars($userData['users_email'] ?? 'bassfall@hotmail.fr') ?></p>
-            <p class="text-muted small mb-4">Ville : <?= htmlspecialchars($userData['users_city'] ?? 'Grenoble') ?></p>
+            <p class="text-muted small mb-1">Email : <?= htmlspecialchars($userData['users_email'] ?? '') ?></p>
+            <p class="text-muted small mb-4">Ville : <?= htmlspecialchars($userData['users_city'] ?? '') ?></p>
 
             <hr class="my-4 text-muted opacity-25">
 
@@ -29,11 +29,27 @@ require_once 'src/View/partial/_alert.php';
             <div class="list-group list-group-flush">
                 <?php if (!empty($userMissions)): ?>
                     <?php foreach ($userMissions as $mission): ?>
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-light rounded mb-2 border-0 border-start border-4 border-success p-3">
+                        <div class="list-group-item d-flex justify-content-between align-items-center bg-light rounded mb-2 border-0 p-3">
                             <span class="fw-bold text-secondary"><?= htmlspecialchars($mission['missions_name']) ?></span>
-                            <span class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-2">
-                                Statut : <?= $mission['demand_mission_validation'] == 1 ? '✔ Validée' : '⏳ En attente' ?>
-                            </span>
+
+                            <?php
+                            // Récupération du statut (gestion de id_status ou du champ classique)
+                            $statusId = $mission['id_status'] ?? null;
+                            ?>
+
+                            <?php if ($statusId == 2 || ($mission['demand_mission_validation'] ?? 0) == 1): ?>
+                                <span class="badge bg-success text-white px-3 py-2">
+                                    ✔ Validée
+                                </span>
+                            <?php elseif ($statusId == 3): ?>
+                                <span class="badge bg-danger text-white px-3 py-2">
+                                    ✖ Refusée
+                                </span>
+                            <?php else: ?>
+                                <span class="badge bg-warning text-dark px-3 py-2">
+                                    ⏳ En attente
+                                </span>
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -44,6 +60,7 @@ require_once 'src/View/partial/_alert.php';
         </div>
     </div>
 
+    <!-- 2. CARTE DU BAS : Modification des infos -->
     <div class="card border-0 shadow-sm" style="border-radius: 12px; background-color: #f5f5f5;">
         <div class="card-body p-4 p-md-5">
 

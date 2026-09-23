@@ -234,7 +234,7 @@ class MissionCtrl
         $this->showListMission();
     }
 
-    public function adminValidate()
+    /*public function adminValidate()
     {
         // On vérifie si la session admin existe
         if (!isset($_SESSION['admin'])) {
@@ -257,5 +257,41 @@ class MissionCtrl
             }
         }
         $this->showListMission(); // à changer
+    }*/
+
+    public function adminValidate()
+{
+    if (!isset($_SESSION['admin'])) {
+        $this->alertError = "Accès refusé.";
+        $this->home();
+        return;
     }
+
+    $idDemand = filter_input(INPUT_GET, 'idDem', FILTER_VALIDATE_INT);
+    $idMission = filter_input(INPUT_GET, 'idMiss', FILTER_VALIDATE_INT);
+    $status = filter_input(INPUT_GET, 'status'); // 'validate' ou 'refuse'
+
+    if ($idDemand && $idMission) {
+        if ($status === 'validate') {
+            // Passe id_status à 2 (Validée) et décrémente le nombre de places
+            $success = $this->missionModel->updateDemandStatus($idDemand, 2);
+            if ($success) {
+                $this->missionModel->decrementMissionPlaces($idMission);
+                $this->alertSuccess = "Candidature validée avec succès.";
+            } else {
+                $this->alertError = "Erreur lors de la validation.";
+            }
+        } else if ($status === 'refuse') {
+            // Passe id_status à 3 (Rejetée)
+            $success = $this->missionModel->updateDemandStatus($idDemand, 3);
+            if ($success) {
+                $this->alertError = "Candidature refusée.";
+            } else {
+                $this->alertError = "Erreur lors du refus.";
+            }
+        }
+    }
+
+    $this->showListMission();
+}
 }
