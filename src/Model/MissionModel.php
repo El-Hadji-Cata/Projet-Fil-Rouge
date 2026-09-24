@@ -240,15 +240,18 @@ class MissionModel
 
     public function updateDemandStatus($idDemand, $statusId)
     {
-        $sql = "UPDATE demand_mission SET id_status = ? WHERE id_demand_mission = ?";
+        $sql = "UPDATE demand_mission SET id_status = ?, demand_mission_validation = 1 WHERE demand_mission_id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$statusId, $idDemand]);
     }
 
     public function decrementMissionPlaces($idMission)
     {
-        $sql = "UPDATE missions SET missions_nbre_volontaries = missions_nbre_volontaries - 1 WHERE missions_id = ? AND missions_nbre_volontaries > 0";
+        // Diminue de 1 seulement s'il reste des places (> 0)
+        $sql = "UPDATE missions 
+            SET missions_nbre_volontaries = missions_nbre_volontaries - 1 
+            WHERE missions_id = ? AND missions_nbre_volontaries > 0";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$idMission]);
     }
-} // Accolade de fin de classe
+} 

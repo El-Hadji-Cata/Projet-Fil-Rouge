@@ -53,7 +53,7 @@ require_once 'src/View/partial/_alert.php';
                         <td><?= $demand['missions_name'] ?></td>
                         <td><?= $demand['demand_mission_date'] ?></td>
                         <td>
-                            <a href="index.php?page=user&action=validateDemand&id=<?= $demand['demand_mission_id'] ?>"
+                            <a href="index.php?page=mission&action=validateDemand&status=validate&idDem=<?= $demand['demand_mission_id'] ?>&idMiss=<?= $demand['id_missions'] ?>"
                                 class="btn btn-sm btn-success">
                                 <i class="fas fa-check"></i> Valider
                             </a>
@@ -71,26 +71,26 @@ require_once 'src/View/partial/_alert.php';
     </section>
 
     <section class="mb-5 shadow-sm p-3 bg-white rounded">
-    <h2 class="text-success"><i class="fas fa-check-circle"></i> Personnes sélectionnées (Missions en cours)</h2>
-    <table class="table table-hover mt-3">
-        <thead>
-            <tr>
-                <th>Bénévole</th>
-                <th>Mission</th>
-                <th>Statut</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($activeMissions as $active): ?>
+        <h2 class="text-success"><i class="fas fa-check-circle"></i> Personnes sélectionnées (Missions en cours)</h2>
+        <table class="table table-hover mt-3">
+            <thead>
                 <tr>
-                    <td><?= htmlspecialchars($active['users_firstname']) ?></td>
-                    <td><?= htmlspecialchars($active['missions_name']) ?></td>
-                    <td><span class="badge bg-success">Validé</span></td>
+                    <th>Bénévole</th>
+                    <th>Mission</th>
+                    <th>Statut</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</section>
+            </thead>
+            <tbody>
+                <?php foreach ($activeMissions as $active): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($active['users_firstname']) ?></td>
+                        <td><?= htmlspecialchars($active['missions_name']) ?></td>
+                        <td><span class="badge bg-success">Validé</span></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
 
     <section class="mb-5 shadow-sm p-3 bg-light rounded">
         <h2 class="text-secondary"><i class="fas fa-user-times"></i> Demandes Refusées</h2>
@@ -108,13 +108,15 @@ require_once 'src/View/partial/_alert.php';
                         <td class="text-muted"><?= htmlspecialchars($rejected['users_firstname'] . ' ' . $rejected['users_lastname']) ?></td>
                         <td class="text-muted"><?= htmlspecialchars($rejected['missions_name']) ?></td>
                         <td>
-                            <a href="index.php?page=user&action=validateDemand&id=<?= $rejected['demand_mission_id'] ?>" 
-                               class="btn btn-sm btn-outline-primary">Ré-examiner</a>
+                            <a href="index.php?page=user&action=validateDemand&id=<?= $rejected['demand_mission_id'] ?>"
+                                class="btn btn-sm btn-outline-primary">Ré-examiner</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
-                <?php if(empty($rejectedDemands)): ?>
-                    <tr><td colspan="3" class="text-center text-muted">Aucun historique de refus.</td></tr>
+                <?php if (empty($rejectedDemands)): ?>
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">Aucun historique de refus.</td>
+                    </tr>
                 <?php endif; ?>
             </tbody>
         </table>

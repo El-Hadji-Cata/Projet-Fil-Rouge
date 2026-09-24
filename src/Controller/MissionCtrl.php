@@ -278,16 +278,18 @@ class MissionCtrl
 
         if ($idDemand && $idMission) {
             if ($status === 'validate') {
-                // Passe id_status à 2 (Validée) et décrémente le nombre de places
+                // 1. Passe le statut à 2 (Validée)
                 $success = $this->missionModel->updateDemandStatus($idDemand, 2);
+
                 if ($success) {
+                    // 2. Décrémente le nombre de places disponibles
                     $this->missionModel->decrementMissionPlaces($idMission);
-                    $this->alertSuccess = "Candidature validée avec succès.";
+                    $this->alertSuccess = "Candidature validée et place mise à jour !";
                 } else {
                     $this->alertError = "Erreur lors de la validation.";
                 }
             } else if ($status === 'refuse') {
-                // Passe id_status à 3 (Rejetée)
+                // Passe le statut à 3 (Rejetée) sans toucher au nombre de places
                 $success = $this->missionModel->updateDemandStatus($idDemand, 3);
                 if ($success) {
                     $this->alertError = "Candidature refusée.";

@@ -27,10 +27,10 @@ require_once 'src/View/partial/_alert.php';
                             <p class="card-text"><strong>Dates:</strong> Du <?= $categ['missions_date_start'] ?> au <?= $categ['missions_date_stop'] ?></p>
                             <p class="card-text"><strong>Lieu:</strong> <?= htmlspecialchars($categ['missions_address']) ?></p>
 
-                            <?php if (isset($_SESSION['users']['id'])): ?>
+                            <?php if (isset($_SESSION['users']['id']) || isset($_SESSION['users']['users_id'])): ?>
                                 <?php
-                                // On vérifie si l'utilisateur est inscrit à la mission ou pas 
-                                $isRegistered = $this->missionModel->alreadyApplied($_SESSION['users']['id'], $categ['missions_id']);
+                                $userId = $_SESSION['users']['users_id'] ?? $_SESSION['users']['id'];
+                                $isRegistered = $this->missionModel->alreadyApplied($userId, $categ['missions_id']);
                                 ?>
 
                                 <?php if ($isRegistered): ?>
@@ -43,7 +43,8 @@ require_once 'src/View/partial/_alert.php';
                                     <button class="btn btn-secondary" disabled>Complet</button>
                                 <?php endif; ?>
 
-                            <?php else: ?>
+                            <?php elseif (!isset($_SESSION['admin'])): ?>
+                                <!-- Affiché UNIQUEMENT si personne n'est connecté (ni user, ni admin) -->
                                 <a href="index.php?page=user&action=signInUser" class="btn btn-secondary">Connectez-vous pour postuler</a>
                             <?php endif; ?>
 
