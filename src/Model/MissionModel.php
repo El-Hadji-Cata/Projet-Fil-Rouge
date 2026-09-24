@@ -178,7 +178,7 @@ class MissionModel
             $this->db->beginTransaction();
 
             // 1. Passer la validation à 1 dans la table demand_mission
-            $sqlValidate = "UPDATE demand_mission SET demand_mission_validation = 1 WHERE id_demand_mission = ?";
+            $sqlValidate = "UPDATE demand_mission SET demand_mission_validation = 1 WHERE demand_mission_id = ?";
             $stmt1 = $this->db->prepare($sqlValidate);
             $stmt1->execute([$idDemand]);
 
@@ -195,7 +195,7 @@ class MissionModel
         } catch (PDOException $e) {
             // En cas d'erreur, on annule tout
             $this->db->rollBack();
-            var_dump($e->getMessage());
+            //var_dump($e->getMessage());
             return false;
         }
     }
@@ -240,18 +240,36 @@ class MissionModel
 
     public function updateDemandStatus($idDemand, $statusId)
     {
-        $sql = "UPDATE demand_mission SET id_status = ?, demand_mission_validation = 1 WHERE demand_mission_id = ?";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$statusId, $idDemand]);
+        try {
+            $sql = "UPDATE demand_mission 
+                SET id_status = :statusId, demand_mission_validation = 1 
+                WHERE demand_mission_id = :idDemand";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':statusId', (int)$statusId, PDO::PARAM_INT);
+            $stmt->bindValue(':idDemand', (int)$idDemand, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+            return false;
+        }
     }
 
     public function decrementMissionPlaces($idMission)
     {
-        // Diminue de 1 seulement s'il reste des places (> 0)
-        $sql = "UPDATE missions 
-            SET missions_nbre_volontaries = missions_nbre_volontaries - 1 
-            WHERE missions_id = ? AND missions_nbre_volontaries > 0";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$idMission]);
+        try {
+            $sql = "UPDATE missions 
+                SET missions_nbre_volontaries = missions_nbre_volontaries - 1 
+                WHERE missions_id = :idMission AND missions_nbre_volontaries > 0";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':idMission', (int)$idMission, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+            return false;
+        }
     }
-} 
+}
