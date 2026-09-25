@@ -9,10 +9,13 @@ class UserCtrl
     public $userModel;
     public $adminModel;
     public $missionModel;
+    public $authModel;
 
     public function __construct($db)
     {
         $this->userModel = new UserModel($db);
+        require_once __DIR__ . '/../Model/AuthModel.php';
+        $this->authModel = new AuthModel($db);
     }
 
     public function manage()
@@ -184,42 +187,41 @@ class UserCtrl
     public function signInUser()
     {
         if (isset($_POST['email'])) {
-            if (
-                empty($_POST['email']) ||
-                empty($_POST['pswrd'])
-            ) {
-
+            if (empty($_POST['email']) || empty($_POST['pswrd'])) {
                 $this->alertError = "Veuillez remplir tous les champs ! ";
             } else {
-
                 try {
-
-                    $user = $this->userModel->getUserByEmail($_POST['email']);
-                    $email = $_POST['email'];
+                    $email = trim($_POST['email']);
                     $pswrd = $_POST['pswrd'];
 
-                    /* var_dump($user); */
+                    // 1. Récupération du compte dans la table auth
+                    $account = $this->authModel->getUserByEmail($email);
 
-                    if (!$user || !password_verify($pswrd, $user['users_password'])) {
-
+                    // 2. Vérification du mot de passe et du rôle utilisateur
+                    if (!$account || !password_verify($pswrd, $account['auth_pswrd'])) {
                         $this->alertError = "Email ou mot de passe incorrect !";
                     } else {
+                        // 3. Récupération des informations spécifiques dans la table users
+                        $profile = $this->authModel->getProfileByAuthId($account['auth_id'], $account['roles_name']);
+
                         $_SESSION['users'] = [
-                            'id' => $user['users_id'],
-                            'firstname' =>  $user['users_firstname'],
-                            'email' => $email
+                            'id' => $profile['users_id'] ?? null,
+                            'users_id' => $profile['users_id'] ?? null,
+                            'firstname' => $profile['users_firstname'] ?? '',
+                            'lastname' => $profile['users_lastname'] ?? '',
+                            'email' => $account['auth_email'],
+                            'id_auth' => $account['auth_id'],
+                            'isAdmin' => 'false'
                         ];
 
                         header("Location: index.php?page=mission&action=homePage");
                         exit();
                     }
                 } catch (PDOException $e) {
-
-                    var_dump("Echec de la connexion au compte" . $e->getMessage());
+                    $this->alertError = "Échec de la connexion : " . $e->getMessage();
                 }
             }
         } else {
-
             $this->alertError = "Veuillez remplir tous les champs ! ";
         }
 
@@ -302,45 +304,41 @@ class UserCtrl
 
     public function signInAdmin()
     {
-
         if (isset($_POST['email'])) {
-            if (
-                empty($_POST['name']) ||
-                empty($_POST['email']) ||
-                empty($_POST['pswrd'])
-            ) {
-
+            if (empty($_POST['email']) || empty($_POST['pswrd'])) {
                 $this->alertError = "Veuillez remplir tous les champs ! ";
             } else {
-
                 try {
-
-                    $admin = $this->userModel->getAdminByEmail($_POST['email']);
-                    $email = $_POST['email'];
+                    $email = trim($_POST['email']);
                     $pswrd = $_POST['pswrd'];
 
-                    /* var_dump($user); */
+                    // 1. Récupération du compte dans la table auth
+                    $account = $this->authModel->getUserByEmail($email);
 
-                    if (!$admin || !password_verify($pswrd, $admin['admin_password'])) {
-
+                    // 2. Vérification du mot de passe
+                    if (!$account || !password_verify($pswrd, $account['auth_pswrd'])) {
                         $this->alertError = "Email ou mot de passe incorrect !";
                     } else {
+                        // 3. Récupération des informations spécifiques dans la table admin
+                        $profile = $this->authModel->getProfileByAuthId($account['auth_id'], $account['roles_name']);
+
                         $_SESSION['admin'] = [
-                            'id' => $admin['admin_id'],
-                            'name' =>  $admin['admin_name'],
-                            'email' => $email
+                            'id' => $profile['admin_id'] ?? $profile['id_admin'] ?? 6,
+                            'admin_id' => $profile['admin_id'] ?? $profile['id_admin'] ?? 6,
+                            'name' => $profile['admin_name'] ?? '',
+                            'email' => $account['auth_email'],
+                            'id_auth' => $account['auth_id'],
+                            'isAdmin' => 'true'
                         ];
 
                         header("Location: index.php?page=mission&action=homePage");
                         exit();
                     }
                 } catch (PDOException $e) {
-
-                    var_dump("Echec de la connexion au compte" . $e->getMessage());
+                    $this->alertError = "Échec de la connexion : " . $e->getMessage();
                 }
             }
         } else {
-
             $this->alertError = "Veuillez remplir tous les champs ! ";
         }
 
