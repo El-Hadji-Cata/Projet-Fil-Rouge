@@ -44,6 +44,15 @@ if ($userId && $database) {
 
             <li class="nav-item"><a href="index.php?page=mission&action=listAllMission">Missions</a></li>
 
+            <!-- LIEN MESSAGERIE (Visible uniquement si connecté) -->
+            <?php if (isset($_SESSION['users']) || isset($_SESSION['admin']) || isset($_SESSION['user'])): ?>
+                <li class="nav-item">
+                    <a href="index.php?page=message&action=conversation" title="Messagerie">
+                        <i class="fas fa-envelope"></i> Messagerie
+                    </a>
+                </li>
+            <?php endif; ?>
+            
             <?php if (!isset($_SESSION['users']) && !isset($_SESSION['admin'])): ?>
                 <li class="nav-item"><a href="index.php?page=user&action=signUpAdmin">Devenir bénévole</a></li>
                 <li class="nav-item"><a href="index.php?page=user&action=signInAdmin" class="buttons">Connexion</a></li>

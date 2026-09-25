@@ -68,3 +68,14 @@ const animation = lottie.loadAnimation({
     path: 'https://lottie.host/d987597c-7676-4424-8817-7fca6dc1a33e/BVrFXsaeui.json'
 });
 
+/* document.addEventListener('DOMContentLoaded', () => {
+    const burger = document.querySelector('.burger');
+    const navLinks = document.querySelector('.links');
+
+    if (burger && navLinks) {
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+}); */
+
