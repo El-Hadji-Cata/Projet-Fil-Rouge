@@ -79,4 +79,38 @@ class MessageModel
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // Compter les messages reçus non lus (ou le total des messages reçus de l'interlocuteur)
+    public function countUnreadMessages($userId, $adminId, $isAdmin)
+    {
+        if ($isAdmin) {
+            // Compte uniquement les messages d'utilisateurs NON LUS
+            $query = "SELECT COUNT(*) FROM message WHERE message_admin = 0 AND is_read = 0";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        } else {
+            if (!$userId) return 0;
+            // Compte uniquement les messages admin NON LUS pour cet utilisateur
+            $query = "SELECT COUNT(*) FROM message WHERE message_admin = 1 AND id_users = :id_users AND is_read = 0";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([':id_users' => $userId]);
+        }
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function markAsRead($idUsers, $isAdmin)
+    {
+        if ($isAdmin) {
+            // L'admin lit les messages de cet utilisateur
+            $query = "UPDATE message SET is_read = 1 WHERE id_users = :id_users AND message_admin = 0";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([':id_users' => $idUsers]);
+        } else {
+            // L'utilisateur lit les messages de l'admin
+            $query = "UPDATE message SET is_read = 1 WHERE id_users = :id_users AND message_admin = 1";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([':id_users' => $idUsers]);
+        }
+    }
 }

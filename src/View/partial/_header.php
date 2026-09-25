@@ -1,18 +1,32 @@
 <?php
 $notifCount = 0;
 $userDemands = [];
+$unreadMsgCount = 0;
 
-// Récupération de l'ID utilisateur
-$userId = $_SESSION['users']['id'] ?? $_SESSION['users']['id_users'] ?? $_SESSION['user']['id'] ?? null;
+// Récupération des IDs
+$userId = $_SESSION['users']['users_id'] ?? $_SESSION['users']['id'] ?? $_SESSION['user']['users_id'] ?? $_SESSION['user']['id'] ?? null;
+$isAdmin = isset($_SESSION['admin']);
+$adminId = $_SESSION['admin']['admin_id'] ?? $_SESSION['admin']['id'] ?? 6;
 $database = $db ?? ($this->db ?? null);
 
-if ($userId && $database) {
-    if (!class_exists('MissionModel')) {
-        require_once __DIR__ . '/../../Model/MissionModel.php';
+if ($database) {
+    // 1. Gestion des demandes de missions (pour l'utilisateur)
+    if ($userId) {
+        if (!class_exists('MissionModel')) {
+            require_once __DIR__ . '/../../Model/MissionModel.php';
+        }
+        $missionModel = new MissionModel($database);
+        $userDemands = $missionModel->getUserDemandsWithStatus($userId);
+        $notifCount = count($userDemands);
     }
-    $missionModel = new MissionModel($database);
-    $userDemands = $missionModel->getUserDemandsWithStatus($userId);
-    $notifCount = count($userDemands);
+
+    // 2. Gestion des messages non lus
+    if (!class_exists('MessageModel')) {
+        require_once __DIR__ . '/../../Model/MessageModel.php';
+    }
+    $messageModel = new MessageModel($database);
+    $unreadMsgCount = $messageModel->countUnreadMessages($userId, $adminId, $isAdmin);
+    //var_dump($userId, $isAdmin, $unreadMsgCount);
 }
 ?>
 
@@ -45,14 +59,19 @@ if ($userId && $database) {
             <li class="nav-item"><a href="index.php?page=mission&action=listAllMission">Missions</a></li>
 
             <!-- LIEN MESSAGERIE (Visible uniquement si connecté) -->
-            <?php if (isset($_SESSION['users']) || isset($_SESSION['admin']) || isset($_SESSION['user'])): ?>
-                <li class="nav-item">
-                    <a href="index.php?page=message&action=conversation" title="Messagerie">
+            <?php if (isset($_SESSION['users']) || isset($_SESSION['user']) || isset($_SESSION['admin'])): ?>
+                <li class="nav-item notification-item">
+                    <a href="index.php?page=message&action=conversation" class="notif-link" title="Messagerie">
                         <i class="fas fa-envelope"></i> Messagerie
+                        <?php if (isset($unreadMsgCount) && $unreadMsgCount > 0): ?>
+                            <span class="badge" style="background-color: #e74c3c; color: #fff; padding: 2px 6px; border-radius: 50%; font-size: 0.75rem; margin-left: 5px;">
+                                <?= $unreadMsgCount ?>
+                            </span>
+                        <?php endif; ?>
                     </a>
                 </li>
             <?php endif; ?>
-            
+
             <?php if (!isset($_SESSION['users']) && !isset($_SESSION['admin'])): ?>
                 <li class="nav-item"><a href="index.php?page=user&action=signUpAdmin">Devenir bénévole</a></li>
                 <li class="nav-item"><a href="index.php?page=user&action=signInAdmin" class="buttons">Connexion</a></li>

@@ -58,6 +58,7 @@ class MessageCtrl
 
         $messages = [];
         if ($idUsers && $idAdmin) {
+            $this->messageModel->markAsRead($idUsers, $isAdmin);
             $messages = $this->messageModel->getConversation($idUsers, $idAdmin);
         }
 
