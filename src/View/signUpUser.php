@@ -19,11 +19,11 @@ require_once 'src/view/partial/_alert.php';
                     <input type="text" class="form-control" id="lastname" name="lastname" required>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6 mt-3">
                     <label for="email" class="form-label fw-semibold">Adresse Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" style="padding: 1.15rem 1rem;" required>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mt-3">
                     <label for="pswrd" class="form-label fw-semibold">Mot de passe</label>
                     <input type="password" class="form-control" id="pswrd" name="pswrd" required>
                 </div>

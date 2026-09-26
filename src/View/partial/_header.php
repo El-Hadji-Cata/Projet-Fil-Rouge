@@ -73,8 +73,8 @@ if ($database) {
             <?php endif; ?>
 
             <?php if (!isset($_SESSION['users']) && !isset($_SESSION['admin'])): ?>
-                <li class="nav-item"><a href="index.php?page=user&action=signUpAdmin">Devenir bénévole</a></li>
-                <li class="nav-item"><a href="index.php?page=user&action=signInAdmin" class="buttons">Connexion</a></li>
+                <li class="nav-item"><a href="index.php?page=user&action=signUpUser">Devenir bénévole</a></li>
+                <li class="nav-item"><a href="index.php?page=user&action=signInUser" class="buttons">Connexion</a></li>
             <?php else: ?>
 
                 <!-- CLOCHE DE NOTIFICATION -->
