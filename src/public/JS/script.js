@@ -79,3 +79,34 @@ const animation = lottie.loadAnimation({
     }
 }); */
 
+/* document.addEventListener('DOMContentLoaded', () => {
+    const burger = document.querySelector('.burger');
+    const navLinks = document.querySelector('.links');
+    const menuItems = document.querySelectorAll('.links li a');
+
+    if (burger && navLinks) {
+        // Toggle du menu lors du clic sur le burger
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('visible');
+            burger.classList.toggle('active');
+        });
+
+        // Fermeture automatique du menu lors du clic sur un lien
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (navLinks.classList.contains('visible')) {
+                    navLinks.classList.remove('visible');
+                    burger.classList.remove('active');
+                }
+            });
+        });
+
+        // Fermeture du menu si la fenêtre est agrandie au-delà du mode tablette
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 992 && navLinks.classList.contains('visible')) {
+                navLinks.classList.remove('visible');
+                burger.classList.remove('active');
+            }
+        });
+    }
+}); */

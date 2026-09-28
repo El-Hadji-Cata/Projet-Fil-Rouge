@@ -52,53 +52,72 @@
         font-size: 42px;
     } */
 
+    /* Bouton Burger */
     .burger {
-        display: block;
-        width: 42px;
-        height: 24px;
-        cursor: pointer;
-        position: relative;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 30px !important;
+        height: 30px !important;
+        /* Hauteur suffisante pour pas couper les traits */
+        cursor: pointer !important;
+        z-index: 100 !important;
+        position: relative !important;
     }
 
+    /* Trait du milieu */
     .burger span {
-        width: 100%;
-        height: 4px;
-        background-color: #000;
-        display: block;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: background-color 0.5s ease-in-out;
+        display: block !important;
+        width: 25px !important;
+        height: 3px !important;
+        background-color: #ffffff !important;
+        /* Blanc pour contraster sur le vert du header */
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        transition: background-color 0.2s ease-in-out !important;
     }
 
+    /* Traits du haut et du bas */
     .burger span::before,
     .burger span::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 4px;
-        background-color: #000;
-        transition: transform 0.5s ease-in-out
+        content: '' !important;
+        display: block !important;
+        width: 25px !important;
+        height: 3px !important;
+        background-color: #ffffff !important;
+        position: absolute !important;
+        left: 0 !important;
+        transition: transform 0.3s ease-in-out, top 0.3s ease-in-out !important;
     }
 
+    /* Trait du haut */
     .burger span::before {
-        transform: translateY(-10px);
+        top: -8px !important;
     }
 
+    /* Trait du bas */
     .burger span::after {
-        transform: translateY(10px);
+        top: 8px !important;
     }
 
+    /* --- ÉTAT ACTIF (Quand on clique sur le burger) --- */
     .burger.active span {
-        background-color: transparent;
+        background-color: transparent !important;
+        /* Le trait du milieu disparaît */
     }
 
     .burger.active span::before {
-        transform: translateY(0px) rotateZ(45deg);
+        top: 0 !important;
+        transform: rotate(45deg) !important;
+        background-color: #ffffff !important;
     }
 
     .burger.active span::after {
-        transform: translateY(0px) rotateZ(-45deg);
+        top: 0 !important;
+        transform: rotate(-45deg) !important;
+        background-color: #ffffff !important;
     }
 
     .active {
@@ -125,21 +144,20 @@
     }
 
     .links {
+        display: none;
+        /* Masqué par défaut */
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: 100vh;
         background-color: #224631;
-        z-index: 30;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        display: none;
+        z-index: 50;
     }
 
     .links.visible {
-        animation: transformMenu 0.5s ease-in-out;
+        display: flex !important;
+        /* S'affiche seulement au clic */
     }
 
 
@@ -491,7 +509,7 @@
         width: 50%;
     }
 
-     .client {
+    .client {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -513,13 +531,13 @@
 
 
 
-    
+
 
     iframe {
         display: none;
     }
 
-     .adr-tel-mail {
+    .adr-tel-mail {
         display: flex;
         flex-direction: column;
         margin: 10px 20px;
@@ -571,5 +589,5 @@
     }
 
 
-    
+
 }

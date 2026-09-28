@@ -116,7 +116,9 @@ if ($database) {
             <?php endif; ?>
         </ul>
 
-        <div class="burger">
+        <div class="burger" id="burger">
+            <span></span>
+            <span></span>
             <span></span>
         </div>
     </div>
