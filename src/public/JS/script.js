@@ -37,7 +37,7 @@ if (menu.classList.contains('visible')) {
 
 } */
 
-const burger = document.querySelector('.burger');
+/* const burger = document.querySelector('.burger');
 const menu = document.querySelector('.links');
 
 burger.addEventListener('click', () => {
@@ -66,7 +66,7 @@ const animation = lottie.loadAnimation({
     loop: true,
     autoplay: true,
     path: 'https://lottie.host/d987597c-7676-4424-8817-7fca6dc1a33e/BVrFXsaeui.json'
-});
+}); */
 
 /* document.addEventListener('DOMContentLoaded', () => {
     const burger = document.querySelector('.burger');
@@ -110,3 +110,14 @@ const animation = lottie.loadAnimation({
         });
     }
 }); */
+
+
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('nav-links');
+
+if (burger && navLinks) {
+    burger.addEventListener('click', () => {
+        burger.classList.toggle('active');
+        navLinks.classList.toggle('visible');
+    });
+}

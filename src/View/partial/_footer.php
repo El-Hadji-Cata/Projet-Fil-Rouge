@@ -1,5 +1,5 @@
 <footer>
-    <div class="adr-tel-mail" style="display: flex; justify-content: space-around; align-items: center; max-width: 1440px; margin: 40px auto; padding: 0 20px;">
+    <div class="adr-tel-mail" style="display: flex; justify-content: space-around; align-items: center; width: 100%; margin: 40px 0; padding: 25px 20px; border-top: 1px solid #224631; border-bottom: 1px solid #224631;">
         <div class="adresse" style="display: flex; align-items: center; gap: 15px;">
             <div class="imge">
                 <img src="src/public/picture/adresse-du-domicile.png" alt="" style="width: 52px; height: 52px; object-fit: contain;">
@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="foo" style="background-color: #224631; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; max-width: 1440px; margin: 0 auto;">
+    <div class="foo" style="background-color: #224631; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; width: 100%;">
         <div class="copy">
             <p>Copyright 2025....</p>
         </div>
@@ -43,18 +43,16 @@
             <div class="facebook">
                 <img src="src/public/picture/social-media.png" alt="Facebook" style="width: 35px; height: 35px; object-fit: contain;">
             </div>
-
             <div class="insta">
                 <img src="src/public/picture/instagram-logo.png" alt="" style="width: 35px; height: 35px; object-fit: contain;">
             </div>
-
             <div class="pinterest">
                 <img src="src/public/picture/pinterest.png" alt="" style="width: 35px; height: 35px; object-fit: contain;">
             </div>
         </div>
     </div>
 </footer>
-
+</div> <!-- Fin d-flex min-vh-100 -->
 
 
 <script src="src/public/JS/script.js"></script>

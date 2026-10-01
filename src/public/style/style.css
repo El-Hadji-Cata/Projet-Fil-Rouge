@@ -1,266 +1,295 @@
-/* @font-face {
-    font-family: 'Irish Grover';
-    src: url('font/IrishGrover-Regular.ttf');
-} */
-
-.irish-grover-regular {
-    font-family: "Irish Grover", system-ui;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.inter-regular {
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 100;
-    font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+}
+
+/* Forcer la hauteur à 100% sur la page et désactiver l'affichage flex sur body */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Le wrapper principal prend toute la hauteur disponible */
+.min-vh-100 {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Le contenu principal (main) s'étire pour pousser le footer vers le bas */
+main,
+.container,
+.container-fluid {
+    flex: 1 0 auto;
+}
+
+/* Le footer garde sa taille naturelle sans être compressé */
+footer {
+    flex-shrink: 0;
+    margin-top: auto; /* Force le footer tout en bas */
+}
+
+/* Le footer reste calé en bas */
+footer,
+.foo {
+    flex-shrink: 0;
 }
 
 body {
-    margin: 0;
-}
-
-.container {
-    width: 1440px;
-    margin: auto;
+    position: relative;
 }
 
 header {
     width: 100%;
-}
-
-li {
-    list-style: none;
-}
-
-a {
-    text-decoration: none;
-    color: black;
-    font-size: 1.1rem;
-}
-
-a:hover {
-    color: #f5982f;
-}
-
-/*---------------------------NAVBAR----------------------------------*/
-
-.navbar {
-    width: 100%;
-    max-width: 1440px;
-    height: 80px;
+    height: 90px;
     margin: 0 auto;
+}
+
+.container {
+    width: 100%;
+    height: auto;
+}
+
+/* Ombre adoucie du header */
+.navbar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.navbar .logo a {
-    font-family: 'Irish Grover';
-    font-size: 2rem;
-    font-weight: bold;
-    color: #224631;
-}
-
-.links {
-    display: none;
-    /* Masqué par défaut */
     position: fixed;
     top: 0;
     left: 0;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 auto;
     width: 100%;
-    height: 100vh;
-    background-color: #224631;
+    height: 90px;
+    background-color: #ffffff;
+    /* Remplacement de l'ancienne ombre imposante par une ombre discrète */
+    box-shadow: 0px 3px 8px #224631;
     z-index: 50;
 }
 
-.links.visible {
-    display: flex !important;
-    /* S'affiche seulement au clic */
+/* Diminution de la taille de l'écriture du logo (de 2.2rem à 1.5rem) */
+.navbar .logo a {
+    font-family: 'Irish Grover';
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #224631 !important;
+    text-decoration: none;
 }
 
-/* .burger-menu-buttons {
-    display: none;
-    margin-right: 30px;
-} */
-
-/* Bouton Burger */
 .burger {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: 30px !important;
-    height: 30px !important;
-    /* Hauteur suffisante pour pas couper les traits */
-    cursor: pointer !important;
-    z-index: 100 !important;
-    position: relative !important;
+    display: none;
 }
 
-/* Trait du milieu */
-.burger span {
-    display: block !important;
-    width: 25px !important;
-    height: 3px !important;
-    background-color: #ffffff !important;
-    /* Blanc pour contraster sur le vert du header */
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    transition: background-color 0.2s ease-in-out !important;
+/* Conteneur logo centré */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Espace propre entre l'image et le texte */
+    height: 100%;
+    /* S'adapte exactement à la hauteur de la navbar */
 }
 
-/* Traits du haut et du bas */
-.burger span::before,
-.burger span::after {
-    content: '' !important;
-    display: block !important;
-    width: 25px !important;
-    height: 3px !important;
-    background-color: #ffffff !important;
-    position: absolute !important;
-    left: 0 !important;
-    transition: transform 0.3s ease-in-out, top 0.3s ease-in-out !important;
-}
-
-/* Trait du haut */
-.burger span::before {
-    top: -8px !important;
-}
-
-/* Trait du bas */
-.burger span::after {
-    top: 8px !important;
-}
-
-/* --- ÉTAT ACTIF (Quand on clique sur le burger) --- */
-.burger.active span {
-    background-color: transparent !important;
-    /* Le trait du milieu disparaît */
-}
-
-.burger.active span::before {
-    top: 0 !important;
-    transform: rotate(45deg) !important;
-    background-color: #ffffff !important;
-}
-
-.burger.active span::after {
-    top: 0 !important;
-    transform: rotate(-45deg) !important;
-    background-color: #ffffff !important;
+/* Réduction légère de l'image pour laisser respirer l'ombre en bas */
+.img-logo {
+    display: flex;
+    align-items: center;
 }
 
 .img-logo img {
-    width: 70px;
-    padding: 0.7rem;
+    width: 53px;
+    /* Passé de 80px à 65px pour éviter qu'elle ne touche le bas */
+    height: auto;
+    object-fit: contain;
 }
 
-.logo {
+.links {
     display: flex;
-    gap: 0.4rem;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: space-between;
+    gap: 2.5rem;
+    list-style: none;
+    margin-bottom: 0;
 }
 
-.buttons {
-    background-color: #224631;
+.links .nav-item {
+    display: flex;
+    align-items: center;
+}
+
+/* FIX: Couleur verte forcee sur desktop */
+.links a,
+.links .nav-links {
+    font-family: "Inter", sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #224631 !important;
+    text-decoration: none;
+}
+
+.links a:hover,
+.links .nav-links:hover {
+    color: #224631 !important;
+}
+
+.notif-link,
+.bell-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.links .bell-link {
+    color: #e9a30c !important;
+    font-size: 1.2rem;
+}
+
+.badge {
+    top: -6px;
+    right: -10px;
+    background-color: #e74c3c;
     color: #ffffff;
-    border: 1px solid #224631;
-    padding: 0.5rem 1.2rem;
-    border-radius: 10px;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* S'assurer que les badges de carte ne sont pas positionnés en absolu */
+.card-body .badge {
+    position: static !important;
+    display: inline-block;
+    margin-left: 8px;
     font-size: 0.9rem;
+}
+
+.admin-profile,
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-weight: bold;
 }
 
+.admin-profile {
+    color: #d35400 !important;
+}
 
-/*------------------------RECHERCHER-----------------------*/
+.user-profile {
+    color: #27ae60 !important;
+}
+
+.links a.buttons,
+.links .buttons {
+    background-color: #224631 !important;
+    color: #ffffff !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.links a.buttons:hover,
+.links .buttons:hover {
+    background-color: #1a3726 !important;
+    color: #ffffff !important;
+}
 
 .search {
-    max-width: 1440px;
     width: 100%;
+    height: auto;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    margin: 120px auto 80px;
-}
-
-.logo-main {
-    display: none;
 }
 
 .logo-recherche {
     width: 100%;
     height: auto;
-    display: flex;
+    margin: 30px auto 0;
+    align-items: center;
+    position: relative;
+}
+
+.logo-main {
+    display: block;
+    background-image: url(./../picture/logo-main.PNG);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 500px;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
 }
 
 .logo-recherche-btn {
     margin: 0 auto;
-    width: 100%;
-    display: flex;
     justify-content: center;
-    align-items: center;
+    position: relative;
+    bottom: 270px;
+    display: flex;
 }
 
-
 .logo-recherche-btn input {
-    width: 250px;
-    height: 34px;
+    width: 35%;
+    height: 55px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    opacity: 75%;
+    justify-content: center;
+    position: relative;
+    top: 0;
+    border: none;
+    padding-left: 15px;
+}
+
+input::placeholder {
+    font-family: "Inter", sans-serif;
+    font-size: 2rem;
 }
 
 .recherche {
-    width: 70px;
-    height: 34px;
+    width: 10%;
+    height: 55px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
     background-color: #224631;
-}
-
-.rch {
-    width: 100%;
-    height: 100%;
     color: #ffffff;
-}
-
-.fa-search-plus {
-    color: #ffffff;
-    font-size: large;
-}
-
-/*----------------------------------QUI SOMMES NOUS?-----------------------------*/
-
-.qui-sommes-nous h1 {
-    /* font-size: 1.5rem;
-    font-weight: bold; */
-}
-
-.qui-sommes-nous p {
-    /* font-weight: 500; */
+    border: none;
+    cursor: pointer;
 }
 
 .qui-sommes-nous {
-    max-width: 1440px;
+    font-family: "Inter", sans-serif;
+    width: 98%;
+    font-size: 1.5rem;
+    line-height: 1.5;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
     gap: 18px;
-    position: relative;
-    margin: 0 auto;
-    margin-bottom: 80px;
+    margin: 0 2.5px 55px 2.5px;
 }
 
-/*-------------------bloc milieu----------------------------*/
+.qui-sommes-nous h1 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #224631;
+}
+
+.qui-sommes-nous p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
 
 .central {
     display: block;
@@ -268,23 +297,18 @@ a:hover {
 
 .bloc-milieu {
     width: 100%;
-    max-width: 1440px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 60% 38%;
-    grid-template-rows: 220px 220px 220px;
-    grid-template-areas: "e s"
-        "e en"
-        "m b";
-    grid-column-gap: 2%;
-    grid-row-gap: 25px;
-}
-
-.eclaireur {
-    background-color: #DFF0FF;
-    display: flex;
     justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 400px 400px 400px;
+    grid-template-areas:
+        "e en"
+        "s m"
+        "b b";
+    grid-row-gap: 15px;
+    grid-column-gap: 15px;
 }
 
 .engagmnt {
@@ -296,18 +320,6 @@ a:hover {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-}
-
-.engage {
-    background-color: #224631;
-    color: #ffffff;
-    height: 23%;
-    opacity: 65%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
 }
 
 .solidarite {
@@ -326,14 +338,9 @@ a:hover {
     grid-area: m;
 }
 
-.text p {
-    font-size: 0.8rem;
-    font-weight: 400;
-    /* text-align: start; */
-}
-
-h3 {
-    text-align: center;
+.eclaireur {
+    background-color: #ffffff;
+    display: flex;
 }
 
 .enggmt {
@@ -371,530 +378,128 @@ h3 {
 .text {
     width: 50%;
     height: 100%;
-    margin-left: 15px;
-    margin-right: 15px;
+    background-color: #DFF0FF;
+    border: 1.5px solid #224631;
+    font-size: 1.2rem;
+    padding: 20px;
 }
 
-/* .solidarite img,
-.benevolat img,
-.missio img {
-    max-width: 50%;
-    min-width: 50%;
-    height: 100%;
-} */
-
-/*-----------------------------DEMANDE DE RENSEIGNEMENT--------------------------------*/
-/* .rens-formul {
-    position: relative;
-} */
-
+.text h3 {
+    color: #224631;
+    margin-bottom: 15px;
+}
 
 .dmd-renseigmnt {
-    max-width: 1150px;
-    height: 135px;
-    margin: 120px auto 0;
-
-    background-color: #224631;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 55px auto 0;
     text-align: center;
-    flex-direction: column;
-    position: relative;
-    z-index: 8;
 }
 
-/*--------------------------------------FORMULAIRE---------------------------------*/
+.dmd-renseigmnt p {
+    font-size: 1.1rem;
+    margin: auto 20px;
+}
+
+.dmd-renseigmnt h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #224631;
+}
+
 .formulaire {
-    height: auto;
-    max-width: 1440px;
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px;
     display: grid;
-    grid-template-columns: 49.5% 49.5%;
-    grid-template-rows: 170px 100px 160px 100px 100px;
-    grid-template-areas: "p a"
-        "n num"
-        "m m"
-        "c c"
-        "v v";
-    grid-column-gap: 1%;
-    grid-row-gap: 5px;
-    background-color: #DFF0FF;
-    position: relative;
-    margin: -25px auto 0;
-    /* TODO: A changer peut-etre par une position absolue */
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    background-color: #224631;
+    color: #fff;
+    border-radius: 15px;
 }
 
-.firstn {
-    grid-area: p;
-    display: flex;
-    flex-direction: column;
-    margin-top: 90px;
-    margin-bottom: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    height: auto;
-}
-
-.lastn {
-    grid-area: n;
-    margin: 20px auto;
-}
-
-.mail {
-    grid-area: a;
-    display: flex;
-    flex-direction: column;
-    margin-top: 90px;
-    margin-bottom: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: center;
-}
-
-.numtel {
-    grid-area: num;
-    margin: 20px auto;
-}
-
-.mess {
-    grid-area: m;
-    margin: 20px auto;
-}
-
-.check {
-    grid-area: c;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: auto;
-    margin-right: auto;
+.mess,
+.check,
+.envoie {
+    grid-column: span 2;
 }
 
 .envoie {
-    grid-area: v;
-    width: 30%;
-    height: 50px;
-    background-color: #224631;
-    color: #ffffff;
-    border-radius: 15px;
     margin: 0 auto;
+    background-color: #ffffff;
+    color: #224631;
+    border-radius: 25px;
+    width: 50%;
+    height: 40px;
+    display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.lastn {
-    display: flex;
-    flex-direction: column;
-}
-
-.firstn,
-.lastn,
-.mail {
-    height: 60px;
-    width: 50%;
-}
-
-.numtel {
-    height: 60px;
-    width: 50%;
-}
-
-#first,
-#last,
-#email {
-    height: 25%;
-}
-
-#tele {
-    height: 25%;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 #firstname,
 #lastname,
-#mail {
-    height: 75%;
-    border-radius: 10px;
-}
-
-.numerotel {
-    display: flex;
-    height: 75%;
-}
-
+#mail,
 #country,
-#tel {
-    width: 50%;
-    height: auto;
-    border-radius: 10px;
-}
-
+#tel,
 #message {
-    border-radius: 10px;
-    height: 135px;
-    width: 900px;
-}
-
-#scales {
-    width: 20px;
-    height: 20px;
-}
-
-#box {
-    font-size: 1.5rem;
-}
-
-
-/*------------------------AVIS CLIENT----------------------------*/
-.client {
     width: 100%;
-    max-width: 1440px;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+.adr-tel-mail {
     display: flex;
     justify-content: space-around;
-    justify-content: center;
-    gap: 30px;
-    margin: 45px auto;
-}
-
-.avis {
-    display: block;
-    width: 450px;
-    height: 350px;
     align-items: center;
-    text-align: center;
-    padding: 10px;
-    box-shadow: 1px 1px 15px #224631;
-    border-radius: 15px;
+    margin: 40px 20px;
 }
 
-.avis img {
-    width: 150px;
-    border-radius: 50%;
-}
-
-.avis p {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-
-.text-client {
-    margin: 45px 0;
-    text-align: center;
-}
-
-
-/*Rechercher une mission*/
-
-.search-form {
-    margin: 0 20px;
-}
-
-.search-group {
+.adresse,
+.telephone,
+.Mail {
     display: flex;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    overflow: hidden;
-    transition: box-shadow 0.3s;
-}
-
-.search-group:focus-within {
-    box-shadow: 0 0 8px rgba(34, 70, 49, 0.2);
-    border-color: #224631;
-}
-
-.search-group input,
-.search-group select {
-    border: none;
-    padding: 8px 15px;
-    outline: none;
-    font-size: 0.9rem;
-}
-
-.search-group input {
-    width: 200px;
-}
-
-.search-group select {
-    border-left: 1px solid #eee;
-    background-color: #f9f9f9;
-    color: #666;
-    cursor: pointer;
-}
-
-.search-btn {
-    background: #224631;
-    /* Votre couleur verte */
-    color: white;
-    border: none;
-    padding: 0 15px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.search-btn:hover {
-    background: #2d5d41;
-}
-
-/* Responsive : On cache ou on réduit sur mobile */
-@media (max-width: 768px) {
-    .search-group input {
-        width: 120px;
-    }
-
-    .search-group select {
-        display: none;
-    }
-
-    /* On cache les thèmes sur petit mobile */
-}
-
-/* Container principal */
-.profile-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Section informations utilisateur */
-.profile-container .user-info {
-    display: flex;
-    flex-direction: column;
     align-items: center;
+    gap: 10px;
+}
+
+.imge img {
+    height: 40px;
+    width: 40px;
+}
+
+.reseau {
+    display: flex;
+    gap: 15px;
+}
+
+.reseau img {
+    height: 30px;
+    width: 30px;
+}
+
+.copy {
     text-align: center;
-    margin-bottom: 30px;
-}
-
-.profile-container .user-info img {
-    border: 4px solid #28a745;
-    /* Vert pour rappeler ton bouton succès */
-    padding: 5px;
-    margin-bottom: 15px;
-    transition: transform 0.3s ease;
-    object-fit: cover;
-    background-color: #f8f9fa;
-}
-
-.profile-container .user-info img:hover {
-    transform: scale(1.05);
-}
-
-.profile-container .user-info h2 {
-    color: #333;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-.profile-container .user-info p {
-    color: #666;
-    margin: 5px 0;
-    font-size: 1.1rem;
-}
-
-/* Liste des missions */
-.profile-container h3 {
-    color: #2c3e50;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
     margin-top: 20px;
+    padding-bottom: 20px;
 }
 
-.profile-container .mission-list {
-    margin-top: 20px;
-}
-
-.profile-container .mission-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 10px;
-    background-color: #f8f9fa;
-    border-left: 5px solid #28a745;
-    border-radius: 5px;
-    transition: background-color 0.2s ease;
-}
-
-.profile-container .mission-item:hover {
-    background-color: #e9ecef;
-}
-
-.profile-container .mission-item strong {
-    color: #495057;
-}
-
-.profile-container .mission-item span {
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 20px;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-/* Adaptabilité mobile */
-@media (max-width: 600px) {
-    .profile-container {
-        margin: 10px;
-        padding: 15px;
-    }
-
-    .profile-container .mission-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .profile-container .mission-item span {
-        margin-top: 10px;
-    }
-}
-
-
-/* Section de modification */
-.edit-profile-section {
-    max-width: 800px;
-    margin: 20px auto 50px auto;
-    padding: 30px;
+/* Forcer la visibilité des bordures des champs */
+.form-control,
+.form-select {
+    border: 1px solid #ced4da !important;
     background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-.edit-profile-section h3 {
-    color: #2c3e50;
-    font-weight: 600;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-}
-
-/* On ajoute une petite icône avant le titre via CSS si tu n'as pas FontAwesome */
-.edit-profile-section h3::before {
-    content: "⚙️";
-    margin-right: 10px;
-    font-size: 1.2rem;
-}
-
-/* Stylisation des champs du formulaire */
-.edit-profile-section .form-label {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #7f8c8d;
-    margin-bottom: 8px;
-}
-
-.edit-profile-section .form-control {
-    border: 2px solid #f1f3f5;
-    border-radius: 8px;
-    padding: 12px 15px;
-    transition: all 0.3s ease;
-    background-color: #fcfcfc;
-}
-
-.edit-profile-section .form-control:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.1);
-    background-color: #fff;
-    outline: none;
-}
-
-/* Style spécifique pour le champ d'upload de fichier */
-.edit-profile-section .form-control-file {
-    padding: 10px;
-    background: #f8f9fa;
-    border: 2px dashed #dee2e6;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* Bouton Enregistrer */
-.edit-profile-section .btn-success {
-    background-color: #28a745;
-    border: none;
-    padding: 12px 30px;
-    font-weight: 600;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(40, 167, 69, 0.2);
-}
-
-.edit-profile-section .btn-success:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(40, 167, 69, 0.3);
-}
-
-/* Alertes succès/erreur (si elles sont dans la div) */
-.alert {
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-
-
-/*-------------------- admin dashbord ---------------------------*/
-
-.dashboard-container {
-    background-color: #f4f7f6;
-    min-height: 100vh;
-    padding: 30px;
-}
-
-.dashboard-container h2 {
-    font-size: 1.5rem;
-    border-left: 5px solid #34495e;
-    padding-left: 15px;
-    margin-bottom: 20px;
-}
-
-.dashboard-container .card {
-    border: none;
-    border-radius: 10px;
-    transition: transform 0.2s;
-}
-
-.dashboard-container .card:hover {
-    transform: translateY(-5px);
-}
-
-.table {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.table thead {
-    background-color: #2c3e50;
-    color: white;
-}
-
-.notification-item {
-    display: flex;
-    align-items: center;
-}
-
-.notif-link {
-    position: relative;
-    text-decoration: none;
-}
-
-.notif-link .badge {
-    position: absolute;
-    top: -6px;
-    right: -10px;
-    background-color: #e74c3c;
-    color: #ffffff;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    line-height: 1;
+/* Éviter l'effet de disparition lors du focus ou préremplissage */
+.form-control:focus,
+.form-select:focus {
+    border-color: #224631 !important;
+    box-shadow: 0 0 0 0.25rem rgba(34, 70, 49, 0.25) !important;
 }
