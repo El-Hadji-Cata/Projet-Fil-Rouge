@@ -10,7 +10,7 @@ require_once 'src/View/partial/_alert.php';
 
     <?php if (!empty($this->missions) && is_array($this->missions)): ?>
         <?php foreach ($this->missions as $categ): ?>
-            <div class="card mb-3" style="max-width: 840px;">
+            <div class="card mb-4 mx-auto" style="max-width: 840px;">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="src/public/picture/engagement.jpg" class="img-fluid rounded-start" alt="Image de mission">
