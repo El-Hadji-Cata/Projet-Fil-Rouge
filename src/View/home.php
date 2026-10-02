@@ -19,13 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         ];
     } else {
         // 3. Traitement (Exemple : envoi par mail ou sauvegarde en BDD)
-         
+
         $to = "paomar8@gmail.com";
         $subject = "Nouvelle demande de renseignements - $firstname $lastname";
         $body = "Nom: $firstname $lastname\nEmail: $email\nTél: $tel\nPays: $country\nMessage:\n$message";
         $headers = "From: $email";
         mail($to, $subject, $body, $headers);
-        
+
 
         // Message de succès affiché via _alert.php
         $_SESSION['alert'] = [
@@ -205,48 +205,35 @@ require_once 'src/View/partial/_alert.php';
         </div>
     </section>
 
-    <!-- Avis Clients -->
+    <!-- Avis Bénévoles Dynamiques -->
     <section class="my-5">
         <h2 class="text-center fw-bold mb-4">Avis Bénévoles</h2>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm text-center p-3">
-                    <img src="src/public/picture/photo-avis client 3.png" class="rounded-circle mx-auto my-3" alt="David" style="width: 80px; height: 80px; object-fit: cover;">
-                    <div class="card-body">
-                        <p class="card-text text-muted">"Un outil très adapté aux activités associatives, intuitif et convivial pour trouver de nouvelles missions."</p>
-                        <h5 class="fw-bold fs-6">David</h5>
-                        <div class="text-warning">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row g-4 justify-content-center">
+            <?php if (!empty($reviews)): ?>
+                <?php foreach ($reviews as $review): ?>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm text-center p-3">
+                            <?php $userPic = !empty($review['users_img']) ? 'public/picture/' . $review['users_img'] : 'src/public/picture/photo-avis client 1.png'; ?>
+                            <img src="<?= htmlspecialchars($userPic) ?>" class="rounded-circle mx-auto my-3" alt="Bénévole" style="width: 80px; height: 80px; object-fit: cover;" onerror="this.src='src/public/picture/photo-avis client 1.png'">
 
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm text-center p-3">
-                    <img src="src/public/picture/photo-avis client 1.png" class="rounded-circle mx-auto my-3" alt="Camille" style="width: 80px; height: 80px; object-fit: cover;">
-                    <div class="card-body">
-                        <p class="card-text text-muted">"Je vous remercie grandement pour votre aide et votre flexibilité. Vraiment mille mercis."</p>
-                        <h5 class="fw-bold fs-6">Camille</h5>
-                        <div class="text-warning">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <div class="card-body">
+                                <p class="card-text text-muted">"<?= htmlspecialchars($review['demand_mission_avis']) ?>"</p>
+                                <h5 class="fw-bold fs-6"><?= htmlspecialchars($review['users_firstname'] ?? 'Bénévole') ?></h5>
+                                <div class="text-warning">
+                                    <?php
+                                    $note = (int)($review['demand_mission_note'] ?? 5);
+                                    for ($i = 1; $i <= 5; $i++):
+                                    ?>
+                                        <i class="<?= $i <= $note ? 'fas' : 'far' ?> fa-star"></i>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm text-center p-3">
-                    <img src="src/public/picture/photo-avis client 2.png" class="rounded-circle mx-auto my-3" alt="Avis client" style="width: 80px; height: 80px; object-fit: cover;">
-                    <div class="card-body">
-                        <p class="card-text text-muted">"Un outil intuitif et convivial pour trouver de nouvelles opportunités de volontariat."</p>
-                        <h5 class="fw-bold fs-6">Marc</h5>
-                        <div class="text-warning">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-center text-muted">Aucun avis publié pour le moment.</p>
+            <?php endif; ?>
         </div>
     </section>
 </main>

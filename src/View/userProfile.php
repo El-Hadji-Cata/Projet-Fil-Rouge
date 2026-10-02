@@ -28,27 +28,85 @@ require_once 'src/View/partial/_alert.php';
 
             <div class="list-group list-group-flush">
                 <?php if (!empty($userMissions)): ?>
-                    <?php foreach ($userMissions as $mission): ?>
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-light rounded mb-2 border-0 p-3">
-                            <span class="fw-bold text-secondary"><?= htmlspecialchars($mission['missions_name']) ?></span>
+                    <?php foreach ($userMissions as $index => $mission): ?>
+                        <div class="list-group-item bg-light rounded mb-2 border-0 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-secondary"><?= htmlspecialchars($mission['missions_name'] ?? '') ?></span>
 
-                            <?php
-                            // Récupération du statut (gestion de id_status ou du champ classique)
-                            $statusId = $mission['id_status'] ?? null;
-                            ?>
+                                <?php
+                                $statusId = $mission['id_status'] ?? null;
+                                $isValidated = ($statusId == 2 || ($mission['demand_mission_validation'] ?? 0) == 1);
+                                ?>
 
-                            <?php if ($statusId == 2 || ($mission['demand_mission_validation'] ?? 0) == 1): ?>
-                                <span class="badge bg-success text-white px-3 py-2">
-                                    ✔ Validée
-                                </span>
-                            <?php elseif ($statusId == 3): ?>
-                                <span class="badge bg-danger text-white px-3 py-2">
-                                    ✖ Refusée
-                                </span>
-                            <?php else: ?>
-                                <span class="badge bg-warning text-dark px-3 py-2">
-                                    ⏳ En attente
-                                </span>
+                                <?php if ($isValidated): ?>
+                                    <span class="badge bg-success text-white px-3 py-2">
+                                        ✔ Validée
+                                    </span>
+                                <?php elseif ($statusId == 3): ?>
+                                    <span class="badge bg-danger text-white px-3 py-2">
+                                        ✖ Refusée
+                                    </span>
+                                <?php else: ?>
+                                    <span class="badge bg-warning text-dark px-3 py-2">
+                                        ⏳ En attente
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Bloc Avis & Notation (Si la mission est validée) -->
+                            <?php if ($isValidated): ?>
+                                <?php
+                                $demandId = $mission['demand_mission_id']
+                                    ?? $mission['id_demand']
+                                    ?? $mission['id_missions']
+                                    ?? $mission['missions_id']
+                                    ?? $mission['id']
+                                    ?? ($index + 1);
+
+                                $userAvis = $mission['demand_mission_avis'] ?? null;
+                                $userNote = $mission['demand_mission_note'] ?? '5';
+                                ?>
+
+                                <?php if (!empty($userAvis)): ?>
+                                    <!-- Affichage de l'avis déjà déposé -->
+                                    <div class="mt-3 text-start p-3 bg-white rounded border">
+                                        <small class="text-success fw-bold d-block mb-1">
+                                            <i class="fas fa-check-circle me-1"></i> Votre avis déposé (<?= htmlspecialchars((string)$userNote) ?>/5 ⭐) :
+                                        </small>
+                                        <p class="mb-0 small text-muted fs-6">"<?= htmlspecialchars((string)$userAvis) ?>"</p>
+                                    </div>
+                                <?php else: ?>
+                                    <!-- Bouton & Formulaire pour laisser un avis -->
+                                    <div class="text-end mt-2">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="toggleReviewForm('reviewForm<?= $demandId ?>')">
+                                            <i class="fas fa-star me-1"></i> Donner mon avis
+                                        </button>
+                                    </div>
+
+                                    <div id="reviewForm<?= $demandId ?>" class="mt-3 text-start" style="display: none;">
+                                        <form action="index.php?page=mission&action=addReview" method="POST" class="p-3 border rounded bg-white shadow-sm">
+                                            <input type="hidden" name="id_demand" value="<?= $demandId ?>">
+
+                                            <div class="mb-2">
+                                                <label class="form-label fw-semibold small mb-1">Note / 5</label>
+                                                <select name="note" class="form-select form-select-sm" required>
+                                                    <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                                                    <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                                                    <option value="3">⭐⭐⭐ (3/5)</option>
+                                                    <option value="2">⭐⭐ (2/5)</option>
+                                                    <option value="1">⭐ (1/5)</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <label class="form-label fw-semibold small mb-1">Votre avis</label>
+                                                <textarea name="avis" class="form-control form-control-sm" rows="3" placeholder="Racontez votre expérience..." required></textarea>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-sm btn-success w-100">Envoyer mon avis</button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
@@ -125,6 +183,14 @@ require_once 'src/View/partial/_alert.php';
 
 </div>
 
+<script>
+function toggleReviewForm(id) {
+    const form = document.getElementById(id);
+    if (form) {
+        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+    }
+}
+</script>
 <?php
 require_once 'src/View/partial/_footer.php';
 ?>

@@ -47,6 +47,9 @@ class MissionCtrl
         } else if ($action === 'validateDemand') {
 
             $this->adminValidate();
+        } else if ($action === 'addReview') {
+
+            $this->addReview();
         } else {
 
             $this->page404();
@@ -55,7 +58,45 @@ class MissionCtrl
 
     public function home()
     {
+        // Récupération des 3 derniers avis
+        $reviews = $this->missionModel->getLatestReviews(3);
         include 'src/View/home.php';
+    }
+
+    public function addReview()
+    {
+        $userId = $_SESSION['users']['users_id']
+            ?? $_SESSION['users']['id_users']
+            ?? $_SESSION['users']['id']
+            ?? null;
+
+        if (!$userId) {
+            header('Location: index.php?page=user&action=signInUser');
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idDemand = filter_input(INPUT_POST, 'id_demand', FILTER_VALIDATE_INT);
+            $note = filter_input(INPUT_POST, 'note', FILTER_VALIDATE_INT);
+            $avis = htmlspecialchars(trim($_POST['avis'] ?? ''));
+
+            if ($idDemand && $note && !empty($avis)) {
+                if ($this->missionModel->addReview($idDemand, $userId, $note, $avis)) {
+                    $_SESSION['alert'] = [
+                        'type' => 'success',
+                        'message' => 'Votre avis a été publié avec succès ! Merci pour votre retour.'
+                    ];
+                } else {
+                    $_SESSION['alert'] = [
+                        'type' => 'danger',
+                        'message' => 'Une erreur est survenue lors de la publication de votre avis.'
+                    ];
+                }
+            }
+        }
+
+        header('Location: index.php?page=user&action=profile');
+        exit();
     }
 
     /*public function showListMission()

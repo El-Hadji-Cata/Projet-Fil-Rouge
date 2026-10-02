@@ -272,4 +272,51 @@ class MissionModel
             return false;
         }
     }
+
+    /**
+     * Enregistre la note et l'avis d'un bénévole pour une mission effectuée
+     */
+    public function addReview($idDemand, $userId, $note, $avis)
+    {
+        try {
+            $sql = "UPDATE demand_mission 
+                SET demand_mission_note = :note, demand_mission_avis = :avis 
+                WHERE (demand_mission_id = :idDemand OR id_missions = :idDemand) AND id_users = :userId";
+
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':note' => $note,
+                ':avis' => $avis,
+                ':idDemand' => (int)$idDemand,
+                ':userId' => (int)$userId
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Récupère les derniers avis renseignés pour la page d'accueil
+     */
+    public function getLatestReviews($limit = 3)
+    {
+        try {
+            $sql = "SELECT dm.demand_mission_note, dm.demand_mission_avis, 
+                       u.users_firstname, u.users_img
+                FROM demand_mission dm
+                INNER JOIN users u ON dm.id_users = u.users_id
+                WHERE dm.demand_mission_avis IS NOT NULL 
+                  AND dm.demand_mission_avis != ''
+                ORDER BY dm.demand_mission_id DESC
+                LIMIT :limit";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
 }
