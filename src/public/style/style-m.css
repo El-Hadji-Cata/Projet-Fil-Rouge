@@ -1,6 +1,6 @@
 /*-----------------RESPONSIVE TABLETTE-----------------*/
 
-@media all and (max-width: 768px) and (min-width: 431px) {
+@media all and (max-width: 992px) and (min-width: 431px) {
 
     * {
         margin: 0;
@@ -93,13 +93,13 @@
     .burger.active span::before {
         top: 0 !important;
         transform: rotate(45deg) !important;
-        background-color: #ffffff !important;
+        background-color: #155724 !important;
     }
 
     .burger.active span::after {
         top: 0 !important;
         transform: rotate(-45deg) !important;
-        background-color: #ffffff !important;
+        background-color: #155724 !important;
     }
 
     .logo {
@@ -133,12 +133,18 @@
         justify-content: center;
         align-items: center;
         gap: 2rem;
+        /* Masqué hors de l'écran à droite par défaut */
+        transform: translateX(100%);
+
+        /* Animation fluide d'ouverture et fermeture (0.4 seconde) */
+        transition: transform 5s ease-in-out;
     }
 
     /* Menu affiché au clic */
     .links.visible,
     .links.active {
         display: flex !important;
+        transform: translateX(0);
     }
 
     /* Liens en BLANC sur le fond vert du menu déplié */
