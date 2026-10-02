@@ -7,6 +7,21 @@
     box-sizing: border-box;
 }
 
+/* Élargir le contenu principal et réduire les marges gauche/droite */
+.container,
+main.container,
+.container-fluid {
+    max-width: 85% !important; /* Élève la limite de largeur pour occuper 85% de l'écran */
+    width: 85% !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+/* S'assurer que le header et le footer s'alignent proprement */
+.navbar {
+    padding: 0 2.5% !important; /* Aligne la navbar sur les 95% du contenu */
+}
+
 /* Forcer la hauteur à 100% sur la page et désactiver l'affichage flex sur body */
 html,
 body {
