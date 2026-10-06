@@ -1,8 +1,6 @@
 <?php
 session_start();
 
- /*var_dump($_SESSION);*/ 
-
 require_once 'src/Controller/MessageCtrl.php';
 require_once 'src/Controller/MissionCtrl.php';
 require_once 'src/Controller/ThematicCtrl.php';
@@ -13,22 +11,17 @@ require_once 'src/Model/MissionModel.php';
 require_once 'src/Model/ThematicModel.php';
 require_once 'src/Model/UserModel.php';
 
-$host = 'localhost';
-$dbname = 'eclaireurs_solidaires';
-$user = 'root';
-$password = '';
-$port = '3306';
+$config = require __DIR__ . '/config.php';
 
 try {
     $db = new PDO(
-        "mysql:host=$host;port=$port;dbname=$dbname",
-        $user,
-        $password,
-        array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+        "mysql:host={$config['host']};port={$config['port']};dbname={$config['dbname']};charset=utf8mb4",
+        $config['username'],
+        $config['password'],
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 } catch (PDOException $e) {
-    
-    die("Echec connexion à la BDD" . $e->getMessage());
+    die("Échec de connexion à la BDD : " . $e->getMessage());
 }
 
 $page = filter_input(INPUT_GET, 'page');
