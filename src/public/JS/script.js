@@ -1,39 +1,39 @@
- /* const form = document.querySelector('form');
+/* const form = document.querySelector('form');
 form.addEventListener('submit', function (event) {
-    // Empêcher le rechargement de la page
-    event.preventDefault();
-    // Code de traitement du formulaire
-    console.log('Formulaire soumis!');
+   // Empêcher le rechargement de la page
+   event.preventDefault();
+   // Code de traitement du formulaire
+   console.log('Formulaire soumis!');
 }); 
 
 
 const openMenu = () => {
-    const menu = document.querySelector('.links');
-    menu.style.display = "flex";
-    menu.classList.toggle('visible');
-    if (menu.classList.contains('visible')) {
-        document.querySelector('header .material-icons').innerHTML = "close";
-        document.querySelector('.logo a').style.color = "#ffffff";
+   const menu = document.querySelector('.links');
+   menu.style.display = "flex";
+   menu.classList.toggle('visible');
+   if (menu.classList.contains('visible')) {
+       document.querySelector('header .material-icons').innerHTML = "close";
+       document.querySelector('.logo a').style.color = "#ffffff";
 
-        menu.animate(
-            [
-                { transform: "translateX(100%)" },
-                { transform: "initial" },
-            ], { duration: 300, },
-        );
-        document.querySelector('#img-logo').setAttribute('src', 'pictures/association2.png');
-    } else {
-        document.querySelector('header .material-icons').innerHTML = "menu";
-        document.querySelector('.logo a').style.color = "#224631";
-        menu.animate(
-            [
-                { transform: "initial" },
-                { transform: "translateX(100%)" },
-            ], { duration: 1000, },
+       menu.animate(
+           [
+               { transform: "translateX(100%)" },
+               { transform: "initial" },
+           ], { duration: 300, },
+       );
+       document.querySelector('#img-logo').setAttribute('src', 'pictures/association2.png');
+   } else {
+       document.querySelector('header .material-icons').innerHTML = "menu";
+       document.querySelector('.logo a').style.color = "#224631";
+       menu.animate(
+           [
+               { transform: "initial" },
+               { transform: "translateX(100%)" },
+           ], { duration: 1000, },
 
-        );
+       );
 
-    }
+   }
 
 } */
 
@@ -123,7 +123,7 @@ if (burger && navLinks) {
 } */
 
 
-    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const burger = document.getElementById('burger');
     const navLinks = document.getElementById('nav-links');
     const logoLink = document.querySelector('.logo a');
@@ -165,15 +165,16 @@ if (burger && navLinks) {
         });
     }
 
-    // Animation Lottie
+    // Animation Lottie 404
     const lottieContainer = document.querySelector('.lottie-animation');
     if (lottieContainer && typeof lottie !== 'undefined') {
+        lottieContainer.innerHTML = '';
         lottie.loadAnimation({
             container: lottieContainer,
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'https://lottie.host/d987597c-7676-4424-8817-7fca6dc1a33e/BVrFXsaeui.json'
+            path: 'https://lottie.host/80a2dfd6-3e3a-4f51-b8ef-13920959b841/50L8o3zB6y.json'
         });
     }
 });

@@ -30,13 +30,49 @@
         top: 0;
         left: 0;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between !important;
+        padding: 0 15px !important;
         margin: 0 auto;
         width: 100%;
         height: 60px;
         background-color: #ffffff;
-        box-shadow: 0px 10px 10px #224631;
-        z-index: 70;
+        box-shadow: 0px 3px 10px rgba(34, 70, 49, 0.2);
+        z-index: 100;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Quand le menu est ouvert : Navbar verte */
+    .navbar:has(.burger.active),
+    .navbar.active {
+        background-color: #224631 !important;
+        box-shadow: none !important;
+    }
+
+    /* Logo */
+    .logo {
+        z-index: 101;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .img-logo img {
+        width: 38px;
+        height: auto;
+    }
+
+    .navbar .logo a {
+        font-family: 'Irish Grover', cursive;
+        font-size: 1.15rem;
+        font-weight: bold;
+        color: #224631 !important;
+        transition: color 0.3s ease;
+    }
+
+    /* Quand le menu est ouvert : Texte du logo en blanc */
+    .navbar:has(.burger.active) .logo a,
+    .navbar.active .logo a {
+        color: #ffffff !important;
     }
 
     /* Bouton Burger */
@@ -47,11 +83,10 @@
         width: 30px !important;
         height: 30px !important;
         cursor: pointer !important;
-        z-index: 100 !important;
+        z-index: 101 !important;
         position: relative !important;
     }
 
-    /* Trait du milieu */
     .burger span {
         display: block !important;
         width: 25px !important;
@@ -64,7 +99,6 @@
         transition: background-color 0.2s ease-in-out !important;
     }
 
-    /* Traits du haut et du bas */
     .burger span::before,
     .burger span::after {
         content: '' !important;
@@ -74,7 +108,7 @@
         background-color: #224631 !important;
         position: absolute !important;
         left: 0 !important;
-        transition: transform 0.3s ease-in-out, top 0.3s ease-in-out !important;
+        transition: transform 0.3s ease-in-out, top 0.3s ease-in-out, background-color 0.3s ease-in-out !important;
     }
 
     .burger span::before {
@@ -85,86 +119,93 @@
         top: 8px !important;
     }
 
-    /* ÉTAT ACTIF DU BURGER */
     .burger.active span {
         background-color: transparent !important;
     }
 
+    /* Quand le menu est ouvert : Croix de fermeture en blanc */
     .burger.active span::before {
         top: 0 !important;
         transform: rotate(45deg) !important;
-        background-color: #155724 !important;
+        background-color: #ffffff !important;
     }
 
     .burger.active span::after {
         top: 0 !important;
         transform: rotate(-45deg) !important;
-        background-color: #155724 !important;
+        background-color: #ffffff !important;
     }
 
-    .logo {
-        z-index: 60;
-    }
-
-    .img-logo img {
-        width: 45px;
-        /* Taille ajustée pour la navbar mobile de 60px */
-        height: auto;
-    }
-
-    .navbar .logo a {
-        font-family: 'Irish Grover';
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #224631 !important;
-    }
-
-    /* Menu mobile masqué par défaut */
+    /* Menu mobile centré verticalement et horizontalement */
     .links {
-        display: none;
-        position: fixed;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 60px);
-        background-color: #224631;
-        z-index: 60;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        /* Masqué hors de l'écran à droite par défaut */
-        transform: translateX(100%);
-
-        /* Animation fluide d'ouverture et fermeture (0.4 seconde) */
-        transition: transform 5s ease-in-out;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        position: fixed !important;
+        top: 60px !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: calc(100vh - 60px) !important;
+        background-color: #224631 !important;
+        z-index: 90 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+        gap: 1.8rem !important;
+        transform: translateX(100%) !important;
+        transition: transform 0.35s ease-in-out, visibility 0.35s ease-in-out !important;
+        visibility: hidden !important;
     }
 
-    /* Quand le JS ajoute la classe .visible, le menu glisse vers la gauche */
     .links.visible,
     .links.active {
-        display: flex !important;
-        transform: translateX(0);
+        transform: translateX(0) !important;
+        visibility: visible !important;
     }
 
-    /* Liens en BLANC sur le fond vert du menu déplié */
+    .links li,
+    .links .nav-item {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .links a,
+    .links .nav-links,
     .links.visible a,
     .links.visible .nav-links,
     .links.active a,
     .links.active .nav-links {
         color: #ffffff !important;
-        font-size: 1.2rem;
+        font-size: 1.2rem !important;
+        font-weight: 500 !important;
+        text-decoration: none !important;
+        text-align: center !important;
     }
 
+    .links a:hover,
     .links.visible a:hover,
     .links.active a:hover {
         color: #f5982f !important;
     }
 
+    .links a.buttons,
+    .links .buttons,
     .links.visible a.buttons,
     .links.active a.buttons {
-        background-color: #224631 !important;
+        background-color: #ffffff !important;
         color: #224631 !important;
+        padding: 10px 24px !important;
+        border-radius: 6px !important;
+        font-weight: bold !important;
+        display: inline-block !important;
+        width: auto !important;
     }
 
     .search {

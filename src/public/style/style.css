@@ -11,7 +11,7 @@
 .container,
 main.container,
 .container-fluid {
-    max-width: 85% !important; /* Élève la limite de largeur pour occuper 85% de l'écran */
+    max-width: 85% !important;
     width: 85% !important;
     padding-left: 15px !important;
     padding-right: 15px !important;
@@ -19,7 +19,7 @@ main.container,
 
 /* S'assurer que le header et le footer s'alignent proprement */
 .navbar {
-    padding: 0 2.5% !important; /* Aligne la navbar sur les 95% du contenu */
+    padding: 0 2.5% !important;
 }
 
 /* Forcer la hauteur à 100% sur la page et désactiver l'affichage flex sur body */
@@ -45,15 +45,10 @@ main,
 }
 
 /* Le footer garde sa taille naturelle sans être compressé */
-footer {
-    flex-shrink: 0;
-    margin-top: auto; /* Force le footer tout en bas */
-}
-
-/* Le footer reste calé en bas */
 footer,
 .foo {
     flex-shrink: 0;
+    margin-top: auto;
 }
 
 body {
@@ -78,17 +73,17 @@ header {
     top: 0;
     left: 0;
     align-items: center;
-    justify-content: space-between; /* Aligne le logo à gauche et les liens à droite */
-    padding: 0 30px; /* Espace propre sur les côtés */
+    justify-content: space-between;
+    padding: 0 30px;
     width: 100%;
     height: 90px;
     background-color: #ffffff;
     box-shadow: 0px 3px 8px #224631;
     z-index: 50;
-    flex-wrap: nowrap !important; /* Interdit le passage à la ligne */
+    flex-wrap: nowrap !important;
 }
 
-/* Diminution de la taille de l'écriture du logo (de 2.2rem à 1.5rem) */
+/* Écriture du logo */
 .navbar .logo a {
     font-family: 'Irish Grover';
     font-size: 1.3rem;
@@ -101,17 +96,14 @@ header {
     display: none;
 }
 
-/* Conteneur logo centré */
+/* Conteneur logo */
 .logo {
     display: flex;
     align-items: center;
     gap: 12px;
-    /* Espace propre entre l'image et le texte */
     height: 100%;
-    /* S'adapte exactement à la hauteur de la navbar */
 }
 
-/* Réduction légère de l'image pour laisser respirer l'ombre en bas */
 .img-logo {
     display: flex;
     align-items: center;
@@ -119,7 +111,6 @@ header {
 
 .img-logo img {
     width: 53px;
-    /* Passé de 80px à 65px pour éviter qu'elle ne touche le bas */
     height: auto;
     object-fit: contain;
 }
@@ -129,9 +120,10 @@ header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 1.2rem; /* Réduit de 2.5rem à 1.2rem pour économiser de l'espace */
+    gap: 1.2rem;
     list-style: none;
     margin-bottom: 0;
+    padding: 0;
     flex-wrap: nowrap !important;
 }
 
@@ -140,7 +132,6 @@ header {
     align-items: center;
 }
 
-/* FIX: Couleur verte forcee sur desktop */
 .links a,
 .links .nav-links {
     font-family: "Inter", sans-serif;
@@ -148,7 +139,7 @@ header {
     font-weight: 500;
     color: #224631 !important;
     text-decoration: none;
-    white-space: nowrap; /* Empêche le texte des boutons de se casser en deux */
+    white-space: nowrap;
 }
 
 .links a:hover,
@@ -181,7 +172,6 @@ header {
     line-height: 1;
 }
 
-/* S'assurer que les badges de carte ne sont pas positionnés en absolu */
 .card-body .badge {
     position: static !important;
     display: inline-block;
@@ -508,14 +498,12 @@ input::placeholder {
     padding-bottom: 20px;
 }
 
-/* Forcer la visibilité des bordures des champs */
 .form-control,
 .form-select {
     border: 1px solid #ced4da !important;
     background-color: #ffffff;
 }
 
-/* Éviter l'effet de disparition lors du focus ou préremplissage */
 .form-control:focus,
 .form-select:focus {
     border-color: #224631 !important;
