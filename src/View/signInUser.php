@@ -1,7 +1,7 @@
 <?php
-require_once 'src/view/partial/_head.php';
-require_once 'src/view/partial/_header.php';
-require_once 'src/view/partial/_alert.php';
+require_once 'src/View/partial/_head.php';
+require_once 'src/View/partial/_header.php';
+require_once 'src/View/partial/_alert.php';
 ?>
 
 <main class="container my-5">
@@ -30,5 +30,5 @@ require_once 'src/view/partial/_alert.php';
 </main>
 
 <?php
-require_once 'src/view/partial/_footer.php';
+require_once 'src/View/partial/_footer.php';
 ?>
